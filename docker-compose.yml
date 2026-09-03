@@ -1,0 +1,19 @@
+services:
+
+  homelab_math_api:
+    build: ./backend
+    container_name: homelab_math_api
+    hostname: homelab_math_api
+    restart: always 
+    networks: 
+      - homelab
+    environment: 
+      - MATH_BACKEND_PORT=8000
+
+networks:
+  homelab:
+    driver: bridge
+    name: homelab
+    external: true
+
+

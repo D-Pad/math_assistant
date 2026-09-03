@@ -1,0 +1,474 @@
+:root {
+  --bg: #12161f;
+  --panel: #1a2030;
+  --panel-2: #1f2636;
+  --grid: #2a3244;
+  --axis: #4a5570;
+  --ink: #EDEAE3;
+  --muted: #8b93a7;
+  --amber: #F2A65A;
+  --coral: #EF6461;
+  --teal: #6FCF97;
+  --line: #2a3244;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+}
+
+/* 
+==========================================================================
+Header
+========================================================================== 
+ */
+
+header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.title-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mark {
+  flex: none;
+}
+
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 30px;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--ink);
+}
+
+.amber-header {
+  color: var(--amber);
+}
+
+.red-header {
+  color: var(--coral);
+}
+
+.sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+  letter-spacing: 0.02em;
+}
+
+/* 
+==========================================================================
+Tabs
+========================================================================== 
+ */
+
+nav.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+nav.tabs .tabbtn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  padding: 9px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+nav.tabs .tabbtn:hover {
+  color: var(--ink);
+  border-color: var(--axis);
+}
+
+nav.tabs .tabbtn.active,
+nav.tabs .tabbtn.router-link-active {
+  background: var(--panel-2);
+  color: var(--amber);
+  border-color: var(--amber);
+}
+
+/* 
+==========================================================================
+Panels
+========================================================================== 
+ */
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px;
+}
+
+.panel + .panel {
+  margin-top: 16px;
+}
+
+h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 20px;
+  margin: 0 0 4px;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 18px;
+  max-width: 60ch;
+}
+
+/* Controls */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  margin-bottom: 16px;
+  align-items: flex-end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 8px 10px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+input[type="text"] {
+  min-width: 190px;
+}
+
+input[type="number"] {
+  width: 82px;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--amber);
+}
+
+input[type="range"] {
+  accent-color: var(--amber);
+  width: 220px;
+}
+
+select {
+  cursor: pointer;
+}
+
+.field.err input {
+  border-color: var(--coral);
+}
+
+.errmsg {
+  color: var(--coral);
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: -8px;
+  margin-bottom: 12px;
+  min-height: 14px;
+}
+
+/* Buttons */
+
+.btnrow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+button.opt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button.opt.active {
+  color: var(--bg);
+  background: var(--amber);
+  border-color: var(--amber);
+}
+
+button.opt:hover:not(.active) {
+  color: var(--ink);
+  border-color: var(--axis);
+}
+
+/* Graph / SVG */
+
+svg.graph {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: var(--panel-2);
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+
+.gridline {
+  stroke: var(--grid);
+  stroke-width: 1;
+}
+
+.axisline {
+  stroke: var(--axis);
+  stroke-width: 1.4;
+}
+
+.curve {
+  fill: none;
+  stroke: var(--amber);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.curve2 {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+}
+
+.tangent {
+  stroke: var(--coral);
+  stroke-width: 1.8;
+  stroke-dasharray: 4 3;
+}
+
+.pt {
+  fill: var(--coral);
+  stroke: var(--bg);
+  stroke-width: 1.5;
+}
+
+.ticklabel {
+  fill: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+}
+
+/* Readout */
+
+.readout {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+}
+
+.readout .item .k {
+  color: var(--muted);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.readout .item .v {
+  color: var(--amber);
+  font-size: 16px;
+}
+
+.readout .item .v.coral {
+  color: var(--coral);
+}
+
+.readout .item .v.teal {
+  color: var(--teal);
+}
+
+/* Limits table */
+
+table.limtable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  margin-top: 14px;
+}
+
+table.limtable th {
+  text-align: left;
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+table.limtable td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+table.limtable td.hi {
+  color: var(--amber);
+}
+
+.conclusion {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: var(--panel-2);
+  border-left: 3px solid var(--amber);
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.note {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 14px;
+  line-height: 1.6;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+/* 
+==========================================================================
+Reference
+========================================================================== 
+ */
+
+.ref-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 680px) {
+  .ref-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ref-card {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+.ref-card h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 10px;
+  color: var(--amber);
+}
+
+.ref-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+}
+
+.ref-card td {
+  padding: 5px 4px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.ref-card td.f {
+  color: var(--muted);
+  width: 46%;
+}
+
+.ref-card ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.ref-card ul li span {
+  color: var(--muted);
+}
+
+/* 
+==========================================================================
+Footer
+========================================================================== 
+*/
+
+footer {
+  margin-top: 26px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 11.5px;
+  font-family: 'JetBrains Mono', monospace;
+}
