@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import Grapher from './Grapher.vue';
 import Riemann from './Riemann.vue';
 import Limits from './Limits.vue';
+import Notes from './Notes.vue';
 import Reference from './Reference.vue';
 
 
@@ -44,6 +45,10 @@ const setTab = (t) => {
             @click="setTab('reference')">
       04 · Cheat Sheet
     </button>
+    <button id="notes-btn" class="tabbtn" data-tab="notes"
+            @click="setTab('notes')">
+      05 · Notes 
+    </button>
   </nav>
   
   <main id="tab-content">
@@ -82,7 +87,15 @@ const setTab = (t) => {
     >
       <Reference />   
     </div>
-  
+
+    <div 
+      id="panel-reference" 
+      class="panel tab-panel"
+      v-else-if="tab === 'notes'"
+    >
+      <Notes />   
+    </div>
+
   </main>
 
 </template>
