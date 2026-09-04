@@ -197,6 +197,25 @@ select {
   transition: border-color 0.15s;
 }
 
+select,
+select::picker(select) {
+  appearance: base-select;
+}
+
+/* Now option:hover actually works */
+select option:hover {
+  background-color: var(--teal); 
+  color: var(--panel);
+}
+
+/* Bonus: style the dropdown container itself */
+select::picker(select) {
+  background: var(--panel-2);
+  border-radius: 0.5rem;
+  padding: 4px;
+  color: var(--ink);
+}   
+
 input[type="text"] {
   min-width: 190px;
 }
@@ -482,7 +501,7 @@ Markdown Viewer
 */
 .markdown-body {
   font-family: 'Fraunces', serif;
-  max-height: 700px;
+  max-height: 600px;
   overflow-y: auto;
   padding-right: 8px;
   scrollbar-width: thin;
