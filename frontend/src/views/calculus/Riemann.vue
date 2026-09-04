@@ -42,9 +42,22 @@ const riemannData = computed(() => {
   for (let i = 0; i < rectCount; i++) {
     const xL = lo + i * dx
     let sample
+
     if (method.value === 'left') sample = xL
     else if (method.value === 'right') sample = xL + dx
-    else if (method.value === 'best') sample = xL < 0 ? xL : xL + dx
+    else if (method.value === 'best') {
+      const hLeft = safe(fn, xL)
+      const hRight = safe(fn, xL + dx)
+    
+      if (!isFinite(hLeft)) sample = xL + dx
+      else if (!isFinite(hRight)) sample = xL
+      else if ((hLeft <= 0 && hRight >= 0) || (hLeft >= 0 && hRight <= 0)) {
+        // sign change inside this rectangle — see note below
+        sample = xL + dx / 2
+      } else {
+        sample = Math.abs(hLeft) <= Math.abs(hRight) ? xL : xL + dx
+      }
+    }
     else sample = xL + dx / 2
 
     const h = safe(fn, sample)
