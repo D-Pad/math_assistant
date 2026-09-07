@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 
-const tab = ref("home");
+const tab = ref("trig");
 
 const setTab = (t) => {  
   
@@ -57,6 +57,11 @@ const setTab = (t) => {
       class="tabbtn" 
       @click="setTab('calculus')" 
       to="/calculus">Calculus</RouterLink>
+    <RouterLink
+        id="trig-btn"
+        class="tabbtn" 
+        @click="setTab('trig')" 
+        to="/trig">Trigonometry</RouterLink>
   </nav>
 
   <RouterView />

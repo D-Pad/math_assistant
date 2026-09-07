@@ -129,10 +129,4 @@
     </div>
   </div>
   
-  <p class="note">
-    Type any of these expressions into the grapher tab to see them —
-    e.g. try “sin(x)” and drag the tangent point to x₀ = 0 to watch
-    its slope approach 1.
-  </p>
- 
 </template>
