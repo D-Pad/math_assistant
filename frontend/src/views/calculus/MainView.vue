@@ -28,7 +28,7 @@ const tabs = [
     
     <div
       v-for="item in tabs"
-      :id="`${item.id}-grapher`" 
+      :id="item.id" 
       :key="item.id" 
       class="panel tab-panel"
       v-show="tab === item.id"

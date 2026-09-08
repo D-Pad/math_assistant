@@ -3,16 +3,16 @@ import NoteBook from "../../components/NoteBook.vue";
 
 // ------------------- Markdown documents here --------------------- //
 // General notes 
-import GenHeader from "../../../markdown_notes/general/header.md?raw";
+import GenHeader from "@notes/calculus/general/header.md?raw";
 
 // Calculus Made Easy 
-import CMEHeader from "../../../markdown_notes/calc_made_easy/header.md?raw";
-import CMEone from "../../../markdown_notes/calc_made_easy/ch1.md?raw";
-import CMEtwo from "../../../markdown_notes/calc_made_easy/ch2.md?raw";
+import CMEHeader from "@notes/calculus/calc_made_easy/header.md?raw";
+import CMEone from "@notes/calculus/calc_made_easy/ch1.md?raw";
+import CMEtwo from "@notes/calculus/calc_made_easy/ch2.md?raw";
 
 // Mobius reading material
-import MobHeader from "../../../markdown_notes/mobius/header.md?raw";
-import MobModOne from "../../../markdown_notes/mobius/mod_1.md?raw";
+import MobHeader from "@notes/calculus/mobius/header.md?raw";
+import MobModOne from "@notes/calculus/mobius/mod_1.md?raw";
 
 // ------------------ Markdown rendering helpers ------------------- //
 const noteSections = {

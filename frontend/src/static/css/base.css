@@ -555,7 +555,7 @@ Markdown Viewer
 
 .markdown-body code {
   font-family: "Courier New", Courier, monospace;
-  background-color: #444;
+  background-color: var(--bg);
   padding: 0px 4px;
   border-radius: 4px;
 }
@@ -570,7 +570,7 @@ Markdown Viewer
 }
 
 .markdown-body ul {
-  color: var(--coral);
+  color: var(--teal);
 }
 
 /* ========== Tables ========== */

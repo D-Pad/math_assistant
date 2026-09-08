@@ -12,6 +12,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@notes': fileURLToPath(
+        new URL('./markdown_notes', import.meta.url)),
     },
   },
   server: {

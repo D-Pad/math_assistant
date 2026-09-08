@@ -26,10 +26,11 @@ An infinite series can converge on it's limit in 3 different ways:
  - The partial sums go beyond the limit, before they converge.
 
 An easy way to "see" that the limit of `1/2 + 1/4 + 1/8 + 1/16 + ... = 1` is to
-look at the image below. You can halve the outer square, then continue halving
-each new half forever, but you'll still have 1 whole square when adding all of 
-the new halves together. 
+look at the figure 2.1 below. You can halve the outer square, then continue 
+halving each new half forever, but you'll still have 1 whole square when 
+adding all of the new halves together. 
 ```
+Figure 2.1
 ┌───────────────┬───────┬───┬─┬┬┐
 │               │       │   │ ├┴┤
 │               │       │   ├─┴─┤

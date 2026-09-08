@@ -19,7 +19,7 @@ const md = new MarkdownIt({
   html: true,      
   linkify: true,
   typographer: true,
-  breaks: true 
+  breaks: false 
 }).use(katex, {
   throwOnError: false,
   // delimiters: 'dollars' | 'brackets' | 'all'  (default is usually dollars)
