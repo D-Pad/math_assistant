@@ -1,9 +1,25 @@
+<script setup>
+import { ref } from 'vue';
+import Calculator from '../components/Calculator.vue';
+import NavRow from '../components/NavRow.vue';
+
+const tab = ref('calculator');
+const tabs = [
+  { id: 'calculator', title: 'Calculator', comp: Calculator }
+];
+</script>
+
 <template>
 
-  <h1 class="red-header">About</h1>
-  <p>
-    An app to help with various college level math classes. Choose a module 
-    from the navigation bar above to find tools and notes on the subject.
-  </p>
+  <NavRow v-model="tab" :tabs="tabs"/>
+
+  <div
+    v-for="item in tabs"
+    :id="`${item.id}-grapher`" 
+    :key="item.id" 
+    v-show="tab === item.id"
+  >
+    <component :is="item.comp" /> 
+  </div>
 
 </template>

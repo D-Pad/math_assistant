@@ -5,52 +5,25 @@ import Riemann from './Riemann.vue';
 import Limits from './Limits.vue';
 import Reference from './Reference.vue';
 import Notes from './Notes.vue';
-import { getTabTitle } from '../../static/scripts/stringOps.js';
+import NavRow from '../../components/NavRow.vue';
 
 
 const tab = ref("grapher");
 
 
 const tabs = [
-  { 
-    id: 'grapher', 
-    title: "Grapher & Tangent",
-    comp: Grapher
-  },
-  { 
-    id: 'riemann', 
-    title: "Riemann Sums", 
-    comp: Riemann 
-  },
-  { 
-    id: 'limits', 
-    title: "Limits", 
-    comp: Limits 
-  },
-  { 
-    id: 'reference', 
-    title: "Cheat Sheet", 
-    comp: Reference 
-  },
-  { 
-    id: 'notes', 
-    title: "Notes", 
-    comp: Notes 
-  },
+  { id: 'grapher', title: "Grapher & Tangent", comp: Grapher },
+  { id: 'riemann', title: "Riemann Sums", comp: Riemann },
+  { id: 'limits', title: "Limits", comp: Limits },
+  { id: 'reference', title: "Cheat Sheet", comp: Reference },
+  { id: 'notes', title: "Notes", comp: Notes },
 ];
 </script>
 
 <template>
 
-  <nav class="tabs">
-    <button
-      v-for="(t, i) in tabs"
-      :class="['tabbtn', tab === t.id ? 'active' : '']"
-      @click="tab = t.id">
-      {{ getTabTitle(i, t.title) }} 
-    </button>
-  </nav>
-  
+  <NavRow v-model="tab" :tabs="tabs"/>
+
   <main id="tab-content">
     
     <div
@@ -63,48 +36,6 @@ const tabs = [
       <component :is="item.comp" /> 
     </div>
     
-    <!--
-    <div 
-      id="panel-grapher" 
-      class="panel tab-panel"
-      v-if="tab === 'grapher'" 
-    >
-      <Grapher /> 
-    </div>
-  
-    <div 
-      id="panel-riemann" 
-      class="panel tab-panel" 
-      v-else-if="tab === 'riemann'" 
-    >
-      <Riemann />      
-    </div>
-  
-    <div 
-      id="panel-limits" 
-      class="panel tab-panel"
-      v-else-if="tab === 'limits'" 
-    >
-      <Limits /> 
-    </div>
-  
-    <div 
-      id="panel-reference" 
-      class="panel tab-panel"
-      v-else-if="tab === 'reference'"
-    >
-      <Reference />   
-    </div>
-
-    <div 
-      id="panel-reference" 
-      class="panel tab-panel"
-      v-else-if="tab === 'notes'"
-    >
-      <Notes />   
-    </div>
-    -->
-
   </main>
 
 </template>

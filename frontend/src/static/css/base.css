@@ -13,6 +13,17 @@
   --line: #2a3244;
 }
 
+@font-face {
+  font-family: 'LcdScreen';
+  src: url('../fonts/tiny5.ttf') format('truetype');
+  size-adjust: 150%;
+}   
+
+@font-face {
+  font-family: 'LcdDot';
+  src: url('../fonts/lcd_dot.ttf') format('truetype');
+}   
+
 * {
   box-sizing: border-box;
 }
@@ -29,6 +40,10 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 #app {
@@ -103,7 +118,8 @@ nav.tabs {
   padding-bottom: 2px;
 }
 
-nav.tabs .tabbtn {
+nav.tabs .tabbtn,
+nav.tabs .hometab {
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
   color: var(--muted);
@@ -116,16 +132,22 @@ nav.tabs .tabbtn {
   transition: all 0.15s ease;
 }
 
-nav.tabs .tabbtn:hover {
+nav.tabs .tabbtn:hover,
+nav.tabs .hometab:hover {
   color: var(--ink);
   border-color: var(--axis);
 }
 
-nav.tabs .tabbtn.active,
-nav.tabs .tabbtn.router-link-active {
+nav.tabs .tabbtn.active {
   background: var(--panel-2);
   color: var(--amber);
   border-color: var(--amber);
+}
+
+nav.tabs .hometab.router-link-active {
+  background: var(--panel-2);
+  color: var(--teal);
+  border-color: var(--teal);
 }
 
 /* 

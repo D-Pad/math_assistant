@@ -1,24 +1,25 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 
-const tab = ref("trig");
+const tab = ref("");
 
-const setTab = (t) => {  
-  
-  const oldTab = tab.value; 
-  
-  const oldTag = `${oldTab}-btn`;
-  const newTag = `${t}-btn`;
+onMounted(() => {
+  const currentUrl = window.location.href;
+  const [_, __, ___, endpoint] = currentUrl.split('/');
 
-  const oldBtn = document.getElementById(oldTag);
-  oldBtn.className = "tabbtn";
+  const validEndpoints = [
+    'calculus', 
+    'trig'
+  ];
 
-  const newBtn = document.getElementById(newTag);
-  newBtn.className = "tabbtn active"; 
-
-  tab.value = t;
-}
+  if (validEndpoints.includes(endpoint)) {
+    tab.value = endpoint;
+  }
+  else {
+    tab.value = '';
+  }
+});
 </script>
 
 <template>
@@ -48,22 +49,20 @@ const setTab = (t) => {
 
   <nav class="tabs">
     <RouterLink 
-      id="home-btn"
-      class="tabbtn" 
-      @click="setTab('home')" 
-      to="/">Home</RouterLink>
+      :class="['hometab', tab === '' ? 'active' : '']" 
+      @click="tab = ''" 
+      to="/">General</RouterLink>
     <RouterLink
-      id="calculus-btn"
-      class="tabbtn" 
-      @click="setTab('calculus')" 
+      :class="['hometab', tab === 'calculus' ? 'active' : '']" 
+      @click="tab = 'calculus'" 
       to="/calculus">Calculus</RouterLink>
     <RouterLink
-        id="trig-btn"
-        class="tabbtn" 
-        @click="setTab('trig')" 
-        to="/trig">Trigonometry</RouterLink>
+      :class="['hometab', tab === 'trig' ? 'active' : '']" 
+      @click="tab = 'trig'" 
+      to="/trig">Trigonometry</RouterLink>
   </nav>
 
   <RouterView />
+
 </template>
 
