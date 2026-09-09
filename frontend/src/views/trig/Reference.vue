@@ -1,4 +1,6 @@
 <script setup>
+import SinCosTan from './SinCosTan.vue';
+
 const unitCircleRows = [
   { deg: '0°',   rad: '0',    sin: '0',    cos: '1',     tan: '0' },
   { deg: '30°',  rad: 'π/6',  sin: '1/2',  cos: '√3/2',  tan: '√3/3' },
@@ -14,10 +16,16 @@ const unitCircleRows = [
 </script>
 
 <template>
+
   <h2>Quick reference</h2>
   <p class="hint">
     Identities, angle values, and shape facts worth having memorized cold.
   </p>
+
+  <div class="ref-card">
+    <h3>Right Triangle Components</h3>  
+    <SinCosTan />
+  </div>
 
   <div class="ref-grid">
     <div class="ref-card">
@@ -150,5 +158,6 @@ const unitCircleRows = [
     amplitude/period values from here into the Wave Explorer to see them 
     drawn out.
   </p>
+
 </template>
 
