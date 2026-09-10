@@ -1,5 +1,5 @@
 <script setup>
-import NoteBook from "../../components/NoteBook.vue";
+import NoteBook from "@/components/NoteBook.vue";
 
 // ------------------- Markdown documents here --------------------- //
 // General notes 

@@ -42,6 +42,11 @@ body {
   min-height: 100vh;
 }
 
+a, 
+a:visited {
+  color: var(--teal);
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -523,6 +528,7 @@ Markdown Viewer
 */
 .markdown-body {
   font-family: 'Fraunces', serif;
+  font-size: 20px; 
   max-height: 600px;
   overflow-y: auto;
   padding-right: 8px;
@@ -558,6 +564,7 @@ Markdown Viewer
   background-color: var(--bg);
   padding: 0px 4px;
   border-radius: 4px;
+  color: var(--muted);
 }
 
 .markdown-body em {

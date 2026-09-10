@@ -16,10 +16,12 @@ const selectedSection = ref("");
 // Selected content
 const header = ref(null);
 const loadHeader = () => {
-  
+
+  console.log("CHANGING HEADER");
   const sec = props.notes[selectedNotebook.value];
   header.value = sec.headerDoc;
-  
+ 
+  console.log("CHANGING SEC");
   const sectionKeys = Object.keys(sec.sections);
   if (sectionKeys.length === 0) {
     selectedSection.value = "";
@@ -27,6 +29,8 @@ const loadHeader = () => {
   } 
 
   selectedSection.value = sectionKeys[0];
+  console.log("SEC CHANGED", sectionKeys); 
+
 }
 
 const content = ref(null);

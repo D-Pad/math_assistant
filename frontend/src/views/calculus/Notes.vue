@@ -1,12 +1,7 @@
 <script setup>
-import NoteBook from "../../components/NoteBook.vue";
+import NoteBook from "@/components/NoteBook.vue";
 
 // ------------------- Markdown documents here --------------------- //
-// General notes 
-import GenHeader from "@notes/calculus/general/header.md?raw";
-import Intro from "@notes/calculus/general/info.md?raw";
-import Functions from "@notes/calculus/general/functions.md?raw";
-
 // Calculus Made Easy 
 import CMEHeader from "@notes/calculus/calc_made_easy/header.md?raw";
 import CMEone from "@notes/calculus/calc_made_easy/ch1.md?raw";
@@ -18,20 +13,6 @@ import MobModOne from "@notes/calculus/mobius/mod_1.md?raw";
 
 // ------------------ Markdown rendering helpers ------------------- //
 const noteSections = {
-  general: {
-    headerDoc: GenHeader,
-    title: "General",
-    sections: {
-      intro: {
-        title: "Intro",
-        comp: Intro
-      },
-      graphing: {
-        title: "Functions", 
-        comp: Functions 
-      }
-    }
-  }, 
   calculusMadeEasy: {
     headerDoc: CMEHeader, 
     title: "Book: Calculus Made Easy",

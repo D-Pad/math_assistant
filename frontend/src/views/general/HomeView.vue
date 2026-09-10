@@ -1,11 +1,15 @@
 <script setup>
 import { ref } from 'vue';
-import Calculator from '../components/Calculator.vue';
-import NavRow from '../components/NavRow.vue';
+import Calculator from '@/components/Calculator.vue';
+import NavRow from '@/components/NavRow.vue';
+
+import Notes from './Notes.vue';
+
 
 const tab = ref('calculator');
 const tabs = [
-  { id: 'calculator', title: 'Calculator', comp: Calculator }
+  { id: 'calculator', title: 'Calculator', comp: Calculator },
+  { id: 'notes', title: 'Notes', comp: Notes }
 ];
 </script>
 
