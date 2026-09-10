@@ -22,7 +22,7 @@ const unitCircleRows = [
     Identities, angle values, and shape facts worth having memorized cold.
   </p>
 
-  <div class="ref-card">
+  <div class="ref-card" style="margin-bottom:16px;">
     <h3>Right Triangle Components</h3>  
     <SinCosTan />
   </div>

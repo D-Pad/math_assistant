@@ -84,6 +84,7 @@ onMounted(() => {
   </nav>
 
   <MarkdownRenderer :content="header" />
+  <hr v-if="header !== null && content !== null"> 
   <MarkdownRenderer :content="content" />
 
 </template>

@@ -73,21 +73,43 @@ export const niceStep = (range) => {
   return step * mag;
 };
 
+
 export const sampleFn = (fn, xMin, xMax, steps = 500) => {
+  
   const pts = [];
+  
   for (let i = 0; i <= steps; i++) {
     const x = xMin + (xMax - xMin) * i / steps;
     pts.push([x, safe(fn, x)]);
   }
+  
   return pts;
+
 };
 
+
+const percentile = (sorted, p) => {
+  
+  const idx = (sorted.length - 1) * p;
+  const lo = Math.floor(idx), hi = Math.ceil(idx);
+  
+  if (lo === hi) return sorted[lo];
+  
+  const frac = idx - lo;
+  
+  return sorted[lo] * (1 - frac) + sorted[hi] * frac;
+
+}
+
+
 export const autoY = (pts, padFrac = 0.15) => {
+
   const ys = pts.map((p) => p[1]).filter((y) => isFinite(y));
   if (!ys.length) return [-10, 10];
 
-  let min = Math.min(...ys);
-  let max = Math.max(...ys);
+  const sorted = [...ys].sort((a, b) => a - b);
+  let min = percentile(sorted, 0.02);
+  let max = percentile(sorted, 0.98);
 
   if (min === max) {
     min -= 1;
@@ -98,13 +120,16 @@ export const autoY = (pts, padFrac = 0.15) => {
   return [min - pad, max + pad];
 };
 
+
 export const sx = (x, xMin, xMax) => {
   return ((x - xMin) / (xMax - xMin)) * W;
 };
 
+
 export const sy = (y, yMin, yMax) => {
   return H - ((y - yMin) / (yMax - yMin)) * H;
 };
+
 
 export const buildPath = (pts, xMin, xMax, yMin, yMax) => {
   let d = '';
@@ -126,9 +151,12 @@ export const buildPath = (pts, xMin, xMax, yMin, yMax) => {
   return d;
 };
 
+
 export const round = (n) => {
+  if (Math.abs(n) < 0.0000001) return 0; 
   return Math.round(n * 100) / 100;
 };
+
 
 export const gridSVG = (xMin, xMax, yMin, yMax) => {
   let s = '';

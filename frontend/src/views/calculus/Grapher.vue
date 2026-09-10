@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import {
   compileExpr, safe, deriv, sampleFn, autoY, sx, sy, buildPath, gridSVG
 } from '../../static/scripts/calculusMath.js'
@@ -19,7 +19,8 @@ const clampedX0 = computed(() => {
 
 const fnResult = computed(() => {
   try {
-    return { fn: compileExpr(expr.value), err: '' }
+    const retObj = { fn: compileExpr(expr.value), err: '' };
+    return retObj;
   } catch (e) {
     return { fn: null, err: e.message }
   }
@@ -28,7 +29,8 @@ const fnResult = computed(() => {
 const fn2Result = computed(() => {
   if (!show2.value || !expr2.value) return { fn: null, err: '' }
   try {
-    return { fn: compileExpr(expr2.value), err: '' }
+    const retObj = { fn: compileExpr(expr2.value), err: '' };
+    return retObj;
   } catch (e) {
     return { fn: null, err: e.message }
   }
@@ -84,6 +86,30 @@ const svgInner = computed(() => {
   }
 
   return svg
+})
+
+
+watch(expr, (val) => {
+  if (val != null) localStorage.setItem('graphExpressionA', val);
+})
+
+watch(expr2, (val) => {
+  if (val != null) localStorage.setItem('graphExpressionB', val);
+})
+
+
+onMounted(() => {
+  
+  const lastExprA = localStorage.getItem('graphExpressionA');
+  if (lastExprA != null) {
+    expr.value = lastExprA;
+  }
+
+  const lastExprB = localStorage.getItem('graphExpressionB');
+  if (lastExprB != null) {
+    expr2.value = lastExprB;
+  }
+
 })
 </script>
 
