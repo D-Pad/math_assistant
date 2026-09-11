@@ -24,7 +24,8 @@ $$
 | `\sqrt[3]{36}`                            | $\sqrt[3]{16}$                  |
 | `x^4`                                     | $x^4$                           |
 | `y_2`                                     | $y_2$                           |
-| `\frac{x}{y}`                             | $\frac{x}{y}$ \Leftrightarrow b = a^\frac{1}{x} |
+| `\frac{x}{y}`                             | $\frac{x}{y}$                   |
+| `a \cdot b`                               | $a \cdot b$                     |
 
 Some Greek symbols and relational symbols can be found 
 [here](https://gist.github.com/LKS90/252ac41bd4a173be35b0)

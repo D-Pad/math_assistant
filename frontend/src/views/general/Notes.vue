@@ -12,6 +12,11 @@ import Functions from "@notes/general/functions/functions.md?raw";
 import FunctionGraph from "@notes/general/functions/function_graph.md?raw";
 import Logarithms from "@notes/general/functions/logarithms.md?raw";
 
+// Fractions
+import FractHeader from "@notes/general/fractions/header.md?raw";
+import FractGen from "@notes/general/fractions/general.md?raw";
+import FractMult from "@notes/general/fractions/multiply.md?raw";
+
 
 // ------------------ Markdown rendering helpers ------------------- //
 const noteSections = {
@@ -25,6 +30,20 @@ const noteSections = {
       }
     }
   },
+  fractions: {
+    headerDoc: FractHeader,
+    title: "Fractions",
+    sections: {
+      frac1: {
+        title: "General",
+        comp: FractGen
+      },
+      frac2: {
+        title: "Multiplying",
+        comp: FractMult
+      }
+    }
+  }, 
   functions: {
     headerDoc: FnHeader,
     title: "Functions",
