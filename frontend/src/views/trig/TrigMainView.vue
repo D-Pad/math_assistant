@@ -21,7 +21,7 @@ const tabs = [
 
   <NavRow v-model="tab" :tabs="tabs"/>
 
-  <main id="tab-content">
+  <div class="tab-content">
 
     <div
       v-for="item in tabs"
@@ -33,6 +33,6 @@ const tabs = [
       <component :is="item.comp" />
     </div>
 
-  </main>
+  </div>
 
 </template>

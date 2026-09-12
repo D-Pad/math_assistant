@@ -14,6 +14,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@notes': fileURLToPath(
         new URL('./markdown_notes', import.meta.url)),
+      '@scripts': fileURLToPath(
+        new URL('./src/static/scripts', import.meta.url)),
     },
   },
   server: {

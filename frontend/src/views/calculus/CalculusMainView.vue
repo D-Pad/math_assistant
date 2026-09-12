@@ -2,10 +2,10 @@
 import { ref } from 'vue';
 import Grapher from './Grapher.vue';
 import Riemann from './Riemann.vue';
-import Limits from './Limits.vue';
+import Limits from './limits/LimitMainView.vue';
 import Reference from './Reference.vue';
 import Notes from './Notes.vue';
-import NavRow from '../../components/NavRow.vue';
+import NavRow from '@/components/NavRow.vue';
 
 
 const tab = ref("grapher");
@@ -24,7 +24,7 @@ const tabs = [
 
   <NavRow v-model="tab" :tabs="tabs"/>
 
-  <main id="tab-content">
+  <div class="tab-content">
     
     <div
       v-for="item in tabs"
@@ -36,7 +36,7 @@ const tabs = [
       <component :is="item.comp" /> 
     </div>
     
-  </main>
+  </div>
 
 </template>
 

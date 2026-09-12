@@ -11,12 +11,12 @@ const router = createRouter({
     {
       path: '/calculus',
       name: 'calculus',
-      component: () => import('../views/calculus/MainView.vue'),
+      component: () => import('../views/calculus/CalculusMainView.vue'),
     },
     {
       path: '/trig',
       name: 'trigonometry',
-      component: () => import('../views/trig/MainView.vue'),
+      component: () => import('../views/trig/TrigMainView.vue'),
     },
   ],
 })

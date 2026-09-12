@@ -1,5 +1,5 @@
 <script setup>
-import { getTabTitle } from '../static/scripts/stringOps.js';
+import { getTabTitle } from '@scripts/stringOps.js';
 
 
 const tab = defineModel();

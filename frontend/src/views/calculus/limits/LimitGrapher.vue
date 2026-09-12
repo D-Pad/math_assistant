@@ -1,15 +1,14 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import {
-  compileExpr, safe, sampleFn, autoY, sx, buildPath, gridSVG, round
-} from '../../static/scripts/calculusMath.js'
+  compileExpr, safe, sampleFn, autoY, sx, buildPath, gridSVG
+} from '@scripts/calculusMath.js'
 
 
 const expr = ref('sin(x)/x');
 const c = ref(0);
 const zoom = ref(1);
-const maxInputValue = ref(10000);
-
+const maxInputValue = ref(1000);
 
 const HS = [0.1, 0.01, 0.001, 0.0001];
 
@@ -155,6 +154,8 @@ const svgInner = computed(() => {
 });
 
 
+/*
+---------------- Function for estimating limits on a graph -------------------
 const getLimits = () => {
 
   const { fn } = fnResult.value;
@@ -183,6 +184,7 @@ const getLimits = () => {
   return { left: firstLeftNanVal, right: firstRightNanVal };
 
 };
+*/
 
 
 watch(expr, (val) => {
@@ -196,11 +198,10 @@ onMounted(() => {
     expr.value = lastExpr;
   }
 });
+
 </script>
 
 <template>
-
-  <h2>Limits — table &amp; zoom</h2>
 
   <p class="hint">
     Watch f(x) as x creeps toward c from both sides. This is the
@@ -265,5 +266,5 @@ onMounted(() => {
 
   <div class="conclusion" v-if="conclusion">{{ conclusion.text }}</div>
 
-</template>
 
+</template>
