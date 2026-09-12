@@ -4,7 +4,7 @@ If *every value* of **x** is associated with *exactly one* value of **y**, then
 
 It is customary to call the value of **x** the *independent variable* and the
 value of **y** the *dependent variable* because the value of **y** *depends* 
-on the value of x. Thus `f(x) = y` means that **y**, the dependent variable, 
+on the value of x. Thus $f(x) = y$ means that **y**, the dependent variable, 
 is the square of **x**. 
 
 ### One-to-one Functions
@@ -13,11 +13,11 @@ such as the area of a square depending on the length of it's sides and vice
 versa. A squares area is a function of it's side length, and the side length
 is a function of it's area.
 
-Instead of writing something like `y = 2x - 7` we write 
-`y = f(x) = 2x - 7` (or simply `f(x) = 2x - 7`). This means that **y**, a 
-function of **x**, depends on the value of **x** in the expression `2x - 7`. In
+Instead of writing something like $y = 2x - 7$ we write 
+$y = f(x) = 2x - 7$ (or simply $f(x) = 2x - 7$). This means that **y**, a 
+function of **x**, depends on the value of **x** in the expression $2x - 7$. In
 this form the expression is called an *explicit* function of **x**. If the 
-equation instead has the equivalent form `2x - y - 7 = 0` it is called an 
+equation instead has the equivalent form $2x - y - 7 = 0$ it is called an 
 *implicit* function of **x** because the explicit form is implied by the 
 equation.
 
@@ -26,9 +26,9 @@ the sum of the squares of the other 2 sides. To express the hypotenuse as a
 function of the squares side (assuming the triangle is a right-triangle with 
 equals base and height), let **y** be the hypotenuse and **x** be the side, 
 the write 
-```python
+$$$python
 y = math.sqrt(2 * (x ** 2))
-```
+$$$
 
 ### Multi-variable Functions
 Functions can have any number of independent variables. A simple instance of 
@@ -36,8 +36,8 @@ a three-variable function is the volume a rectangular room. It is dependent on
 the rooms width, length, and height.
 
 ### Linear vs Non-linear
-If a function has the form `y = mx + b`, it is a straight line and is said to
-be *linear*. If the function does not have the form `y = mx + b`, then it is 
+If a function has the form $y = mx + b$, it is a straight line and is said to
+be *linear*. If the function does not have the form $y = mx + b$, then it is 
 not a straight line and the function is non-linear.
 
 If a function has 3 independent variables, the Cartesian graph must be extended
