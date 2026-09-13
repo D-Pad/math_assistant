@@ -30,6 +30,29 @@ const rows = computed(() => {
   return { lows: lowRows, highs: highRows };
 
 });
+
+
+const calculationOutput = ref(null);
+const submitCalculation = async () => {
+ 
+  let concatRows = structuredClone(rows.value.lows);
+  concatRows.push(limitValue.value);
+  concatRows = concatRows.concat(rows.value.highs);
+
+  const resp = await fetch('/api/limit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      fn: fnInput.value,
+      inputs: concatRows 
+    })
+  });
+
+  calculationOutput.value = await resp.json();
+
+}
 </script>
 
 <template>
@@ -42,8 +65,8 @@ const rows = computed(() => {
     </div>
 
     <div class="field">
-      <label>Top and Bottom Rows</label>
-      <input type="number" v-model="numRows" min="0">
+      <label>Rows</label>
+      <input type="number" v-model="numRows" min="1">
     </div>
     
     <div class="field">
@@ -57,7 +80,7 @@ const rows = computed(() => {
     </div>
 
     <div class="field">
-      <label>f(x) </label>
+      <label>f(x)</label>
       <input type="text" id="fn-input-box" v-model="fnInput">
     </div>
 
@@ -96,7 +119,29 @@ const rows = computed(() => {
       </tbody>
     
     </table>
- 
+
+    <table v-if="calculationOutput !== null" class="input-table">
+      
+      <tbody>
+        
+        <tr id="input-table-header">
+          <th>output values</th>
+        </tr>
+         
+        <tr v-for="val in Object.values(calculationOutput.results)">
+          <td>
+            {{ val[1] }} 
+          </td>
+        </tr>
+
+      </tbody>
+    
+    </table>    
+
+  </div>
+
+  <div class="btn-container">
+    <button @click="submitCalculation()">Calculate</button>
   </div>
 
 </template>
@@ -144,4 +189,27 @@ const rows = computed(() => {
 #fn-input-box {
   width: 200%;
 }
+
+.btn-container {
+  display: flex;
+}
+
+.btn-container button {
+  margin: 30px auto 0px auto;
+  background-color: var(--cyan);
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  transform: scale(1);
+  font-weight: bold; 
+  transition: 
+    background-color 0.25s ease,
+    transform 0.25s ease; 
+}
+
+.btn-container button:hover {
+  transform: scale(1.1);
+  background-color: var(--amber);
+}  
 </style>
+

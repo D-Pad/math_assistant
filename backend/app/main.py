@@ -1,26 +1,14 @@
-from flask import Flask, jsonify
+import wsgi
 from os import environ
-import logging 
 
 
-logging.getLogger("werkzeug").disabled = True
-app = Flask(__name__)
-PORT = environ.get("MATH_BACKEND_PORT", 5000)
-
-
-@app.route("/")
-def index():
-    return jsonify({
-        "online": 1 
-    })
-
-
-@app.route("/check")
-def health_check():
-    return jsonify({"status": "ok"}), 200
+def testing():
+    pass
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT)
-
+    if environ.get("MATH_TEST_MODE") == "1":
+        testing()
+    else:
+        wsgi.run_server()
 
