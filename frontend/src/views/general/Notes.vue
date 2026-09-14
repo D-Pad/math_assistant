@@ -17,6 +17,10 @@ import FractHeader from "@notes/general/fractions/header.md?raw";
 import FractGen from "@notes/general/fractions/general.md?raw";
 import FractMult from "@notes/general/fractions/multiply.md?raw";
 
+// Exponents and Roots 
+import ExpHeader from "@notes/general/exponents/header.md?raw";
+import Exponents from "@notes/general/exponents/info.md?raw";
+
 
 // ------------------ Markdown rendering helpers ------------------- //
 const noteSections = {
@@ -27,6 +31,16 @@ const noteSections = {
       ch1: {
         title: "Intro",
         comp: Intro
+      }
+    }
+  },
+  exponents: {
+    headerDoc: ExpHeader,
+    title: "Exponents",
+    sections: {
+      exp1: {
+        title: "Exponents and Roots",
+        comp: Exponents
       }
     }
   },

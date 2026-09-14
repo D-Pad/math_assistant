@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 
 const limitValue = ref(2);
@@ -50,9 +50,16 @@ const submitCalculation = async () => {
     })
   });
 
+  localStorage.setItem("limitEstimateExpr", fnInput.value);
   calculationOutput.value = await resp.json();
 
 }
+
+
+onMounted(() => {
+  const expr = localStorage.getItem("limitEstimateExpr");
+  fnInput.value = expr;
+});
 </script>
 
 <template>
@@ -94,13 +101,13 @@ const submitCalculation = async () => {
       
       <tbody>
         
-        <tr id="input-table-header">
+        <tr>
           <th>X input values</th>
         </tr>
         
         <tr v-for="n in Object.keys(rows.lows)">
-          <td>
-            <input type="number" class="input-row" :value="rows.lows[n]">
+          <td class="input-row" >
+            <input type="number" class="table-input" :value="rows.lows[n]">
           </td>
         </tr>
 
@@ -120,23 +127,27 @@ const submitCalculation = async () => {
     
     </table>
 
-    <table v-if="calculationOutput !== null" class="input-table">
-      
-      <tbody>
-        
-        <tr id="input-table-header">
-          <th>output values</th>
-        </tr>
-         
-        <tr v-for="val in Object.values(calculationOutput.results)">
-          <td>
-            {{ val[1] }} 
-          </td>
-        </tr>
+    <div v-if="calculationOutput !== null">
 
-      </tbody>
+      <table class="input-table">
+        
+        <tbody>
+          
+          <tr>
+            <th>output values</th>
+          </tr>
+           
+          <tr v-for="val in Object.values(calculationOutput.results)">
+            <td>
+              {{ val[1] }} 
+            </td>
+          </tr>
+
+        </tbody>
+      
+      </table> 
     
-    </table>    
+    </div>
 
   </div>
 
@@ -147,19 +158,15 @@ const submitCalculation = async () => {
 </template>
 
 <style scoped>
-.input-table {
-  font-size: 18pt;
-}
-
 .input-table th {
   text-align: left;
-  color: var(--muted);
-  font-weight: 500;
-  font-size: 10pt;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 6px 10px;
   border-bottom: 1px solid var(--line);
+  color:var(--muted); 
+  font-weight:500;
+  font-size: 11px;
 }
 
 .input-table td input[type="number"] {
@@ -170,10 +177,15 @@ const submitCalculation = async () => {
   width: 100%;
   font: inherit;
   padding: 0;
+  margin: 0;
 }
 
 .input-table td {
-  border-bottom: 1px solid var(--teal);
+  border: 1px solid var(--line);
+}
+
+.table-input {
+  -webkit-appearance: none;
 }
 
 #limit-input-values {
