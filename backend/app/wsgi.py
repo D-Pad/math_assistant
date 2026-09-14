@@ -133,7 +133,7 @@ def calculate_limit():
         results.append([x, y])
 
     avg = None 
-    if total > 0 and count > 0:
+    if count > 0:
         avg = round(total / count, 2)
   
     return jsonify({"limit": avg, "results": results}) 
