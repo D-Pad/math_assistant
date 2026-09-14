@@ -1,15 +1,16 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 
 
 const limitValue = ref(2);
-const numRows = ref(4);
+const numRows = ref(3);
 const mutationFactor = ref(0.1);
 const fnInput = ref("x^2");
 
 
+const calculationOutput = ref(null);
 const rows = computed(() => {
- 
+
   const lowRows = [];
   const highRows = [];
 
@@ -32,7 +33,6 @@ const rows = computed(() => {
 });
 
 
-const calculationOutput = ref(null);
 const submitCalculation = async () => {
  
   let concatRows = structuredClone(rows.value.lows);
@@ -54,6 +54,16 @@ const submitCalculation = async () => {
   calculationOutput.value = await resp.json();
 
 }
+
+
+const hasData = () => {
+  return calculationOutput.value !== null;
+}
+
+
+watch(rows, () => {
+  calculationOutput.value = null; 
+});
 
 
 onMounted(() => {
@@ -103,11 +113,15 @@ onMounted(() => {
         
         <tr>
           <th>X input values</th>
+          <th v-if="hasData()">Output values</th>
         </tr>
         
         <tr v-for="n in Object.keys(rows.lows)">
           <td class="input-row" >
             <input type="number" class="table-input" :value="rows.lows[n]">
+          </td>
+          <td v-if="hasData()">
+            {{ calculationOutput.results[n][1] }} 
           </td>
         </tr>
 
@@ -115,39 +129,23 @@ onMounted(() => {
           <td style="color:var(--amber)">
             <strong>{{ limitValue }}</strong>
           </td>
+          <td v-if="hasData()" style="color:var(--amber)">
+            {{ calculationOutput.results[numRows][1] }} 
+          </td>
         </tr>
 
         <tr v-for="n in Object.keys(rows.highs)">
           <td>
             <input type="number" class="input-row" :value="rows.highs[n]">
           </td>
+          <td v-if="hasData()">
+            {{ calculationOutput.results[Number(n) + 1 + numRows][1] }} 
+          </td>
         </tr>
 
       </tbody>
     
     </table>
-
-    <div v-if="calculationOutput !== null">
-
-      <table class="input-table">
-        
-        <tbody>
-          
-          <tr>
-            <th>output values</th>
-          </tr>
-           
-          <tr v-for="val in Object.values(calculationOutput.results)">
-            <td>
-              {{ val[1] }} 
-            </td>
-          </tr>
-
-        </tbody>
-      
-      </table> 
-    
-    </div>
 
   </div>
 
@@ -158,13 +156,18 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.input-table {
+  width: 400px;
+  border-collapse: collapse;
+}
+
 .input-table th {
   text-align: left;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 6px 10px;
-  border-bottom: 1px solid var(--line);
-  color:var(--muted); 
+  color:var(--panel);
+  background-color: var(--teal);
   font-weight:500;
   font-size: 11px;
 }
@@ -181,7 +184,13 @@ onMounted(() => {
 }
 
 .input-table td {
-  border: 1px solid var(--line);
+  width: 50%;
+}
+
+.input-table th,
+.input-table td,
+.input-table tr {
+  border: 1px solid var(--muted);
 }
 
 .table-input {

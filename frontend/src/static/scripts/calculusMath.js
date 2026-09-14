@@ -104,10 +104,14 @@ const percentile = (sorted, p) => {
 
 export const autoY = (pts, padFrac = 0.15) => {
 
+  // Separate Y values from pts, which looks like [[x1, y1], [x2, y2], ... ]
   const ys = pts.map((p) => p[1]).filter((y) => isFinite(y));
   if (!ys.length) return [-10, 10];
 
+  // Sort y-values
   const sorted = [...ys].sort((a, b) => a - b);
+
+  // Get min and max values
   let min = percentile(sorted, 0.02);
   let max = percentile(sorted, 0.98);
 
@@ -116,8 +120,10 @@ export const autoY = (pts, padFrac = 0.15) => {
     max += 1;
   }
 
+  // Set padding then calculate min/max
   const pad = (max - min) * padFrac;
   return [min - pad, max + pad];
+
 };
 
 

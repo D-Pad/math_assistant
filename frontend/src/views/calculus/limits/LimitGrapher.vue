@@ -6,10 +6,10 @@ import {
 
 
 const expr = ref('sin(x)/x');
-const c = ref(0);
-const zoom = ref(1);
-const maxInputValue = ref(1000);
-
+const cVal = ref(0);
+const zoomX = ref(1);
+const zoomY = ref(5);
+const zoomYAuto = ref(false);
 const HS = [0.1, 0.01, 0.001, 0.0001];
 
 
@@ -31,32 +31,35 @@ const tableRows = computed(() => {
 
   const rows = []
 
-  // approach from left: largest h -> smallest, so values move toward c
+  const cInput = cVal.value !== '' ? cVal.value : 0
+  const xMultiplier = zoomX.value >= 1000 ? 100 : zoomX.value >= 100 ? 10 : 1;
+
   HS.slice().reverse().forEach((h) => {
-    const x = c.value - h
+    const x = cInput - (h * xMultiplier); 
     const y = safe(fn, x)
     rows.push({
       key: `L${h}`,
-      x: x.toFixed(4),
+      x: x,
       y: isFinite(y) ? y.toFixed(6) : 'undefined',
       target: false
     })
+  
   })
 
-  const yc = safe(fn, c.value)
+  const yc = safe(fn, cInput)
   rows.push({
     key: 'target',
-    x: `x = ${c.value} (target)`,
+    x: `x = ${cInput} (target)`,
     y: isFinite(yc) ? yc.toFixed(6) : 'undefined at c',
     target: true
   })
 
   HS.forEach((h) => {
-    const x = c.value + h
+    const x = cInput + (h * xMultiplier); 
     const y = safe(fn, x)
     rows.push({
       key: `R${h}`,
-      x: x.toFixed(4),
+      x: x,
       y: isFinite(y) ? y.toFixed(6) : 'undefined',
       target: false
     })
@@ -75,15 +78,15 @@ const conclusion = computed(() => {
   if (!fn) return null;
 
   const hMin = HS[HS.length - 1]; 
-  const lastL = safe(fn, c.value - hMin);
-  const lastR = safe(fn, c.value + hMin); 
+  const lastL = safe(fn, cVal.value - hMin);
+  const lastR = safe(fn, cVal.value + hMin); 
 
   if (isFinite(lastL) && isFinite(lastR)) {
     if (Math.abs(lastL - lastR) < 0.01) {
       return {
         text: `Both sides are converging toward roughly 
         ${((lastL + lastR) / 2).toFixed(4)} — looks like the limit exists as 
-        x → ${c.value}.`
+        x → ${cVal.value}.`
       }
     } else {
       return {
@@ -95,34 +98,9 @@ const conclusion = computed(() => {
   } else {
     return {
       text: `One or both sides are blowing up (undefined/infinite) near 
-      x = ${c.value} — check for a vertical asymptote.`
+      x = ${cVal.value} — check for a vertical asymptote.`
     }
   }
-
-  /*
-  // Text output message
-  let outputText = "";
- 
-  
-  // Limit calculations
-  const limits = getLimits();
-  
-  if (limits.left != null && limits.right != null) {
-    outputText += `As x→-∞, y→${limits.left} and as x→∞, y→${limits.right}. `;
-  }
-  else if (limits.left != null) {
-    outputText += `As x→-∞, y→${limits.left} `;
-  }
-  else if (limits.right != null) {
-    outputText += `As x→∞, y→${limits.right}. `;
-  }
-  else {
-    outputText += "No limits exist. ";
-  }
-
-  // Convergence calculations 
-  const convergence = getConvergence();
-  */
 
 })
 
@@ -133,58 +111,34 @@ const svgInner = computed(() => {
   const { fn } = fnResult.value;
   if (!fn) return '';
 
-  const xMin = c.value - zoom.value;
-  const xMax = c.value + zoom.value;
+  const xMin = cVal.value - zoomX.value;
+  const xMax = cVal.value + zoomX.value;
 
   const refPts = sampleFn(fn, 
-     c.value - REFERENCE_ZOOM, c.value + REFERENCE_ZOOM);
-  const [yMin, yMax] = autoY(refPts);
+     cVal.value - REFERENCE_ZOOM, cVal.value + REFERENCE_ZOOM);
+  
+  let [yMin, yMax] = [null, null];
+  
+  if (zoomYAuto.value) {
+    [yMin, yMax] = autoY(refPts);
+  }
+  else {
+    yMin = cVal.value - zoomY.value;
+    yMax = cVal.value + zoomY.value;
+  }
 
   const pts = sampleFn(fn, xMin, xMax);
 
   let svg = gridSVG(xMin, xMax, yMin, yMax);
   svg += `<path class="curve" d="${buildPath(pts, xMin, xMax, yMin, yMax)}"/>`;
   svg += `<line class="tangent"
-    x1="${sx(c.value, xMin, xMax)}" y1="0"
-    x2="${sx(c.value, xMin, xMax)}" y2="360"
+    x1="${sx(cVal.value, xMin, xMax)}" y1="0"
+    x2="${sx(cVal.value, xMin, xMax)}" y2="360"
     stroke="#8b93a7" stroke-dasharray="2 4"/>`;
 
   return svg;
 
 });
-
-
-/*
----------------- Function for estimating limits on a graph -------------------
-const getLimits = () => {
-
-  const { fn } = fnResult.value;
-  let firstLeftNanVal = null;
-  let firstRightNanVal = null;
-
-  // Determine if an X-limit exists or not.
-  for (let i = 0; i <= zoom.value; i += HS[0]) {
-    
-    const leftInput = round(i * -1);
-    const rightInput = round(i);
-
-    const leftResult = safe(fn, leftInput);
-    const rightResult = safe(fn, rightInput);
-
-    if (Number.isNaN(leftResult) && firstLeftNanVal == null) {
-      firstLeftNanVal = leftInput;
-    }
-
-    if (Number.isNaN(rightResult) && firstRightNanVal == null) {
-      firstRightNanVal = rightInput;
-    }
-
-  }
-
-  return { left: firstLeftNanVal, right: firstRightNanVal };
-
-};
-*/
 
 
 watch(expr, (val) => {
@@ -198,7 +152,6 @@ onMounted(() => {
     expr.value = lastExpr;
   }
 });
-
 </script>
 
 <template>
@@ -218,26 +171,46 @@ onMounted(() => {
     
     <div class="field">
       <label>x → c</label>
-      <input type="number" v-model.number="c" step="0.1">
+      <input type="number" v-model.number="cVal" step="0.1">
     </div>
 
     <div class="field">
-      <label>Max Input Value</label>
-      <input type="number" v-model.number="maxInputValue">
+
+      <label>X-axis Zoom</label>
+      <input 
+        type="number" 
+        min="0.1" 
+        max="10000"
+        step="0.5"
+        class="" 
+        v-model="zoomX"
+      >
+    
+    </div> 
+
+    <div class="field">
+      <label>Y-axis Zoom</label>
+      <input 
+        type="number" 
+        min="0.1" 
+        max="10000" 
+        step="0.5"
+        v-model="zoomY"
+        :disabled="zoomYAuto"
+        :class="{ 'disabled-input': zoomYAuto }" 
+      >
+    </div>
+ 
+    <div class="btnrow">
+      <button
+        class="opt"
+        :class="{ active: zoomYAuto === true }"
+        @click="zoomYAuto = !zoomYAuto" 
+      >
+        Auto Y
+      </button>
     </div>
 
-    <div class="btnrow">
-      <button class="opt" 
-        :class="{ active: zoom === 5 }" 
-        @click="zoom = 5">±5</button>
-      <button class="opt" 
-        :class="{ active: zoom === 1 }" 
-        @click="zoom = 1">±1</button>
-      <button class="opt" 
-        :class="{ active: zoom === 0.1 }" 
-        @click="zoom = 0.1">±0.1</button>
-    </div>
-  
   </div>
 
   <div class="errmsg">{{ fnResult.err }}</div>
@@ -265,6 +238,5 @@ onMounted(() => {
   </table>
 
   <div class="conclusion" v-if="conclusion">{{ conclusion.text }}</div>
-
 
 </template>
