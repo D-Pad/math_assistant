@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
+import NumInput from '@/components/CustomNumInput.vue';
 
 
 const limitValue = ref(2);

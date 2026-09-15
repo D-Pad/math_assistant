@@ -3,6 +3,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import {
   compileExpr, safe, sampleFn, autoY, sx, buildPath, gridSVG
 } from '@scripts/calculusMath.js'
+import NumInput from '@/components/CustomNumInput.vue';
 
 
 const expr = ref('sin(x)/x');
@@ -116,15 +117,17 @@ const svgInner = computed(() => {
 
   const refPts = sampleFn(fn, 
      cVal.value - REFERENCE_ZOOM, cVal.value + REFERENCE_ZOOM);
-  
+ 
+  console.log("REF PTS", refPts);
+
   let [yMin, yMax] = [null, null];
   
   if (zoomYAuto.value) {
     [yMin, yMax] = autoY(refPts);
   }
   else {
-    yMin = cVal.value - zoomY.value;
-    yMax = cVal.value + zoomY.value;
+    yMin = zoomY.value * -1;
+    yMax = zoomY.value;
   }
 
   const pts = sampleFn(fn, xMin, xMax);
@@ -171,7 +174,7 @@ onMounted(() => {
     
     <div class="field">
       <label>x → c</label>
-      <input type="number" v-model.number="cVal" step="0.1">
+      <NumInput v-model="cVal" /> 
     </div>
 
     <div class="field">
