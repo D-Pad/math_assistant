@@ -3,6 +3,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import {
   compileExpr, safe, deriv, sampleFn, autoY, sx, sy, buildPath, gridSVG
 } from '../../static/scripts/calculusMath.js'
+import NumInput from '@/components/CustomNumInput.vue';
 
 const expr = ref('x^3 - 3x + 1')
 const expr2 = ref('')
@@ -128,11 +129,11 @@ onMounted(() => {
     </div>
     <div class="field">
       <label>x min</label>
-      <input type="number" v-model.number="xMin">
+      <NumInput v-model.number="xMin" />
     </div>
     <div class="field">
       <label>x max</label>
-      <input type="number" v-model.number="xMax">
+      <NumInput v-model.number="xMax" />
     </div>
     <div class="btnrow">
       <button

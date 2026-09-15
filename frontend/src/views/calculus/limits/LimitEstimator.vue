@@ -79,22 +79,21 @@ onMounted(() => {
     
     <div class="field">
       <label>Limit Value</label>
-      <input type="number" v-model="limitValue">
+      <NumInput v-model="limitValue"/>
     </div>
 
     <div class="field">
       <label>Rows</label>
-      <input type="number" v-model="numRows" min="1">
+      <NumInput v-model="numRows" min="1" /> 
     </div>
     
     <div class="field">
       <label>Mutation Factor</label>
-      <input 
-        type="number" 
-        v-model="mutationFactor" 
+      <NumInput 
+        v-model="mutationFactor"
         min="0.1"
         step="0.1"
-      >
+      />
     </div>
 
     <div class="field">

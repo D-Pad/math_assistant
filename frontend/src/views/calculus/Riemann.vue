@@ -3,6 +3,8 @@ import { ref, computed } from 'vue'
 import {
   compileExpr, safe, sampleFn, autoY, sx, sy, buildPath, gridSVG, simpson
 } from '../../static/scripts/calculusMath.js'
+import NumInput from '@/components/CustomNumInput.vue';
+
 
 const expr = ref('4 - 0.25*x^2')
 const a = ref(-3)
@@ -109,12 +111,12 @@ const riemannData = computed(() => {
 
     <div class="field">
       <label>a</label>
-      <input type="number" v-model.number="a">
+      <NumInput v-model.number="a" /> 
     </div>
 
     <div class="field">
       <label>b</label>
-      <input type="number" v-model.number="b">
+      <NumInput v-model.number="b" />
     </div>
 
     <div class="btnrow">
