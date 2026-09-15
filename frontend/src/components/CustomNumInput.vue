@@ -1,7 +1,4 @@
 <script setup>
-import { ref } from 'vue';
-
-
 const numElement = defineModel();
 
 
@@ -17,14 +14,20 @@ const props = defineProps({
   step: {
     type: Number,
     default: 1
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 });
 
 
 const decrement = () => {
   
+  if (props.disabled) return;
+  
   const current = Number(numElement.value) || 0;
-  let next = current - props.step;
+  let next = current - Number(props.step);
 
   if (props.min !== null && next < props.min) {
     next = props.min;
@@ -37,8 +40,10 @@ const decrement = () => {
 
 const increment = () => {
 
+  if (props.disabled) return;
+
   const current = Number(numElement.value) || 0;
-  let next = current + props.step;
+  let next = current + Number(props.step);
 
   if (props.max !== null && next > props.max) {
     next = props.max;
@@ -51,26 +56,30 @@ const increment = () => {
 
 <template>
   
-  <div class="number-input">
+  <div class="number-input" :class="{ 'disabled-input': disabled }">
     
     <input
       v-model.number="numElement"
-      class="custom-number-input" 
+      class="custom-number-input"
       type="number" 
       value="1" 
       :min="min" 
       :max="max" 
       :step="step"
+      :disabled="disabled"
+      :class="{ 'disabled-input': disabled }"
     >
  
     <div class="increment-btns">
       <button 
         type="button" 
+        :class="{ 'disabled-input': disabled }"
         @click="increment">
         +
       </button>
       <button 
         type="button" 
+        :class="{ 'disabled-input': disabled }"
         @click="decrement">
         −
       </button>
@@ -133,7 +142,16 @@ const increment = () => {
   color: var(--teal);
 }
 
+.number-input.disabled-input .increment-btns button {
+  color: var(--muted);
+}
+
+.number-input.disabled-input .increment-btns button:hover {
+  cursor: default;
+}
+
 .custom-number-input {
   padding: 0px;
 }
 </style>
+

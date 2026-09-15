@@ -118,8 +118,6 @@ const svgInner = computed(() => {
   const refPts = sampleFn(fn, 
      cVal.value - REFERENCE_ZOOM, cVal.value + REFERENCE_ZOOM);
  
-  console.log("REF PTS", refPts);
-
   let [yMin, yMax] = [null, null];
   
   if (zoomYAuto.value) {
@@ -178,30 +176,19 @@ onMounted(() => {
     </div>
 
     <div class="field">
-
       <label>X-axis Zoom</label>
-      <input 
-        type="number" 
-        min="0.1" 
-        max="10000"
-        step="0.5"
-        class="" 
-        v-model="zoomX"
-      >
-    
+      <NumInput v-model="zoomX" min="0.1" max="10000" step="0.5" /> 
     </div> 
 
     <div class="field">
       <label>Y-axis Zoom</label>
-      <input 
-        type="number" 
+      <NumInput 
+        v-model="zoomY" 
         min="0.1" 
         max="10000" 
-        step="0.5"
-        v-model="zoomY"
+        step="0.5" 
         :disabled="zoomYAuto"
-        :class="{ 'disabled-input': zoomYAuto }" 
-      >
+      /> 
     </div>
  
     <div class="btnrow">
