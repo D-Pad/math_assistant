@@ -1,12 +1,37 @@
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import {
   compileExpr, safe, sampleFn, autoY, sx, buildPath, gridSVG
 } from '@scripts/calculusMath.js'
 import NumInput from '@/components/CustomNumInput.vue';
 
 
-const expr = ref('sin(x)/x');
+const props = defineProps({
+  limExpr: {
+    type: String,
+    required: true 
+  }
+});
+
+
+const emit = defineEmits([ 
+  'update:limExpr'
+]);
+
+
+const localExpr = ref(props.limExpr);
+
+
+watch(() => props.limExpr, (newVal) => {
+  localExpr.value = newVal;
+});
+
+
+watch(localExpr, (newVal) => {
+  emit('update:limExpr', newVal);
+});
+
+
 const cVal = ref(0);
 const zoomX = ref(1);
 const zoomY = ref(5);
@@ -16,7 +41,9 @@ const HS = [0.1, 0.01, 0.001, 0.0001];
 
 const fnResult = computed(() => {
   try {
-    return { fn: compileExpr(expr.value), err: '' }
+    const data = { fn: compileExpr(localExpr.value), err: '' };
+    emit('update:limExpr', localExpr.value);
+    return data;
   } catch (e) {
     return { fn: null, err: e.message }
   }
@@ -140,19 +167,6 @@ const svgInner = computed(() => {
   return svg;
 
 });
-
-
-watch(expr, (val) => {
-  if (val != null) localStorage.setItem('limitExpr', val);
-});
-
-
-onMounted(() => {
-  const lastExpr = localStorage.getItem('limitExpr');
-  if (lastExpr != null) {
-    expr.value = lastExpr;
-  }
-});
 </script>
 
 <template>
@@ -167,7 +181,7 @@ onMounted(() => {
 
     <div class="field" :class="{ err: fnResult.err }">
       <label>f(x) =</label>
-      <input type="text" v-model="expr">
+      <input type="text" v-model="localExpr">
     </div>
     
     <div class="field">
@@ -177,16 +191,16 @@ onMounted(() => {
 
     <div class="field">
       <label>X-axis Zoom</label>
-      <NumInput v-model="zoomX" min="0.1" max="10000" step="0.5" /> 
+      <NumInput v-model="zoomX" :min="0.1" :max="10000" :step="0.5" /> 
     </div> 
 
     <div class="field">
       <label>Y-axis Zoom</label>
       <NumInput 
         v-model="zoomY" 
-        min="0.1" 
-        max="10000" 
-        step="0.5" 
+        :min="0.1" 
+        :max="10000" 
+        :step="0.5" 
         :disabled="zoomYAuto"
       /> 
     </div>

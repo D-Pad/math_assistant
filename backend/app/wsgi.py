@@ -83,7 +83,7 @@ def evaluate_expr(parsed_expr, x, y):
         {"__builtins__": {}},
         {
             "x": x,
-            "y", y,
+            "y": y,
             "pi": math.pi,
             "e": math.e,
             **ALLOWED_FUNCTIONS,
@@ -106,37 +106,97 @@ def health_check():
 @app.route("/limit", methods=['POST'])
 def calculate_limit():
 
+    ROUNDED_TO = 6
     data = request.json
 
-    inputs = data.get("inputs")
+    left_inputs = data.get("leftInputs")
+    right_inputs = data.get("rightInputs")
+    tolerance = data.get("tolerance")
+    limit = data.get("limit")
     expr = parse_expr(data['fn'])
 
-    if inputs is None or expr is None:
-        return jsonify({"error": "Invalid input data"})
+    if (
+        left_inputs is None
+        or right_inputs is None
+        or limit is None
+        or expr is None
+    ):
+        return jsonify({"error": "Invalid input values"}), 400
 
-    results = [] 
-    total = 0
-    count = 0
+    left_results = []
+    right_results = []
+    limit_result = None
 
-    for x in inputs:
-        
+    for x in left_inputs:
+
         try:
-            # FIXME: Add support for second variable
-            y = evaluate_expr(expr, x, None)
-            y = round(y, 5)
-            total += y
-            count += 1
- 
+            y = round(evaluate_expr(expr, x, None), ROUNDED_TO)
+
         except (ValueError, OverflowError, ZeroDivisionError):
             y = "undefined"
 
-        results.append([x, y])
+        left_results.append([x, y])
 
-    avg = None 
-    if count > 0:
-        avg = round(total / count, 2)
-  
-    return jsonify({"limit": avg, "results": results}) 
+    for x in right_inputs:
+
+        try:
+            y = round(evaluate_expr(expr, x, None), ROUNDED_TO)
+
+        except (ValueError, OverflowError, ZeroDivisionError):
+            y = "undefined"
+
+        right_results.append([x, y])
+
+    try:
+        limit_result = evaluate_expr(expr, limit, None)
+    except (ValueError, OverflowError, ZeroDivisionError):
+        limit_result = "undefined" 
+
+    # Get the values closest to the limit.
+    left_valid = [
+        y for _, y in left_results
+        if y != "undefined"
+    ]
+
+    right_valid = [
+        y for _, y in right_results
+        if y != "undefined"
+    ]
+
+    if not left_valid or not right_valid:
+        return jsonify({
+            "limitCalc": limit_result,
+            "status": "undefined",
+            "leftResults": left_results,
+            "rightResults": right_results
+        })
+
+    left_estimate = left_valid[-1]
+    right_estimate = right_valid[0]
+
+    difference = abs(left_estimate - right_estimate)
+
+    # Converging or diverging
+    if difference <= tolerance:
+        estimate = round((left_estimate + right_estimate) / 2, ROUNDED_TO)
+        status = "Converging"
+    else:
+        estimate = None
+        status = "Does not converge"
+
+    response_data = {
+        "limitCalc": limit_result,
+        "status": status,
+        "estimate": estimate,
+        "tolerance": tolerance, 
+        "leftEstimate": left_estimate,
+        "rightEstimate": right_estimate,
+        "difference": round(difference, ROUNDED_TO),
+        "leftResults": left_results,
+        "rightResults": right_results
+    }
+
+    return jsonify(response_data)
 
 
 def run_server():

@@ -1,12 +1,28 @@
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import NumInput from '@/components/CustomNumInput.vue';
 
 
+const props = defineProps({
+  limExpr: {
+    type: String,
+    required: true
+  }
+});
+
+
+const emit = defineEmits([ 
+  'update:limExpr'
+]);
+
+
+const localExpr = ref(props.limExpr);
+
+
 const limitValue = ref(2);
+const limitTolerance = ref(0.01);
 const numRows = ref(3);
 const mutationFactor = ref(0.1);
-const fnInput = ref("x^2");
 
 
 const calculationOutput = ref(null);
@@ -36,23 +52,22 @@ const rows = computed(() => {
 
 const submitCalculation = async () => {
  
-  let concatRows = structuredClone(rows.value.lows);
-  concatRows.push(limitValue.value);
-  concatRows = concatRows.concat(rows.value.highs);
-
   const resp = await fetch('/api/limit', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      fn: fnInput.value,
-      inputs: concatRows 
+      fn: props.limExpr,
+      leftInputs: rows.value.lows,
+      rightInputs: rows.value.highs,
+      limit: limitValue.value,
+      tolerance: limitTolerance.value
     })
   });
 
-  localStorage.setItem("limitEstimateExpr", fnInput.value);
-  calculationOutput.value = await resp.json();
+  const data = await resp.json();
+  calculationOutput.value = data;
 
 }
 
@@ -66,11 +81,9 @@ watch(rows, () => {
   calculationOutput.value = null; 
 });
 
-
-onMounted(() => {
-  const expr = localStorage.getItem("limitEstimateExpr");
-  fnInput.value = expr;
-});
+// Keep the expression updated across components
+watch(() => props.limExpr, (v) => { localExpr.value = v });
+watch(localExpr, (v) => { emit('update:limExpr', v); });
 </script>
 
 <template>
@@ -84,21 +97,30 @@ onMounted(() => {
 
     <div class="field">
       <label>Rows</label>
-      <NumInput v-model="numRows" min="1" /> 
+      <NumInput v-model="numRows" :min="1" /> 
     </div>
     
     <div class="field">
       <label>Mutation Factor</label>
       <NumInput 
         v-model="mutationFactor"
-        min="0.1"
-        step="0.1"
+        :min="0.1"
+        :step="0.1"
+      />
+    </div>
+
+    <div class="field">
+      <label>Tolerance</label>
+      <NumInput 
+        v-model="limitTolerance"
+        :min="0.0001"
+        :step="0.001"
       />
     </div>
 
     <div class="field">
       <label>f(x)</label>
-      <input type="text" id="fn-input-box" v-model="fnInput">
+      <input type="text" id="fn-input-box" v-model="localExpr">
     </div>
 
   </div>
@@ -121,7 +143,7 @@ onMounted(() => {
             <input type="number" class="table-input" :value="rows.lows[n]">
           </td>
           <td v-if="hasData()">
-            {{ calculationOutput.results[n][1] }} 
+            {{ calculationOutput.leftResults[n][1] }} 
           </td>
         </tr>
 
@@ -130,7 +152,7 @@ onMounted(() => {
             <strong>{{ limitValue }}</strong>
           </td>
           <td v-if="hasData()" style="color:var(--amber)">
-            {{ calculationOutput.results[numRows][1] }} 
+            {{ calculationOutput.limitCalc }} 
           </td>
         </tr>
 
@@ -139,7 +161,7 @@ onMounted(() => {
             <input type="number" class="input-row" :value="rows.highs[n]">
           </td>
           <td v-if="hasData()">
-            {{ calculationOutput.results[Number(n) + 1 + numRows][1] }} 
+            {{ calculationOutput.rightResults[n][1] }} 
           </td>
         </tr>
 
@@ -147,8 +169,61 @@ onMounted(() => {
     
     </table>
 
+    <table class="input-table" v-if="hasData()">
+
+      <tbody>
+
+        <tr>
+          <th>Attribute</th>
+          <th>Value</th> 
+        </tr>
+
+        <tr>
+          <td>Difference</td>
+          <td>{{ calculationOutput.difference }}</td>
+        </tr>
+
+        <tr>
+          <td>Left Estimate</td>
+          <td>{{ calculationOutput.leftEstimate }}</td>
+        </tr>
+        
+        <tr>
+          <td>Right Estimate</td>
+          <td>{{ calculationOutput.rightEstimate }}</td>
+        </tr>
+
+        <tr>
+          <td>Limit Estimate</td>
+          <td v-if="calculationOutput.estimate !== null">
+            {{ calculationOutput.estimate }}
+          </td>
+          <td v-else>
+            No limit 
+          </td>
+        </tr>
+
+        <tr>
+          <td>Status</td>
+          <td>{{ calculationOutput.status }}</td>
+        </tr>
+
+      </tbody>
+
+    </table>
+  
   </div>
 
+  <template v-if="calculationOutput !== null">
+    <div class="conclusion" v-if="calculationOutput.estimate !== null">
+      A limit exists at {{ calculationOutput.estimate }}
+    </div>
+
+    <div class="conclusion" v-else>
+      No limit exists 
+    </div>
+  </template>
+  
   <div class="btn-container">
     <button @click="submitCalculation()">Calculate</button>
   </div>
@@ -170,6 +245,7 @@ onMounted(() => {
   background-color: var(--teal);
   font-weight:500;
   font-size: 11px;
+  height: 20px;
 }
 
 .input-table td input[type="number"] {
@@ -185,6 +261,7 @@ onMounted(() => {
 
 .input-table td {
   width: 50%;
+  padding-left: 10px;
 }
 
 .input-table th,
@@ -200,6 +277,7 @@ onMounted(() => {
 #limit-input-values {
   display: flex;
   gap: 20px;
+  width: 100%;
 }
 
 #tab-body-content {
@@ -208,7 +286,7 @@ onMounted(() => {
 }
 
 #fn-input-box {
-  width: 200%;
+  width: 150%;
 }
 
 .btn-container {
