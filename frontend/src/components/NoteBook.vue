@@ -2,15 +2,24 @@
 import { ref, watch, onMounted } from "vue";
 import MarkdownRenderer from "./MarkdownRenderer.vue";
 
+
 // ------------------ Markdown rendering helpers ------------------- //
 const props = defineProps({
   notes: {
     type: Object,
     required: true
-  }  
+  },
+  lastNotebook: {
+    type: String,
+    default: ""
+  }
 });
 
-const selectedNotebook = ref("");
+
+const emit = defineEmits(['update:book']);
+
+
+const selectedNotebook = ref(props.lastNotebook);
 const selectedSection = ref("");
 
 // Selected content
@@ -30,6 +39,7 @@ const loadHeader = () => {
 
 }
 
+
 const content = ref(null);
 const loadContent = () => {
   
@@ -44,11 +54,49 @@ const loadContent = () => {
   }
 }
 
-watch(selectedNotebook, loadHeader);
-watch(selectedSection, loadContent);
+
+watch(selectedNotebook, (val) => {
+  if (val) { 
+    emit('update:book', val);
+  }
+  loadHeader();
+});
+
+
+watch(selectedSection, (val) => {
+  if (val) {
+    emit('update:section', val);
+  } 
+  loadContent()
+});
+
 
 onMounted(() => {
-  selectedNotebook.value = Object.keys(props.notes)[0];
+
+  const notebookKeys = Object.keys(props.notes);
+
+  if (props.lastNotebook && props.notes[props.lastNotebook]) {
+    selectedNotebook.value = props.lastNotebook;
+  }
+  else {
+    selectedNotebook.value = notebookKeys[0] || "";
+  }
+
+  const nb = props.notes[selectedNotebook.value];
+  if (nb) {
+    const sectionKeys = Object.keys(nb.sections);
+
+    if (props.lastSection && nb.sections[props.lastSection]) {
+      selectedSection.value = props.lastSection;
+    }
+    else {
+      selectedSection.value = sectionKeys[0] || "";
+    }
+  }
+
+  loadHeader();
+  loadContent();
+
 });
 </script>
 

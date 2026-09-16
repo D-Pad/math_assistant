@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import Calculator from '@/components/Calculator.vue';
 import NavRow from '@/components/NavRow.vue';
-
 import Notes from './Notes.vue';
 
 
