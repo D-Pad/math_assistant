@@ -24,7 +24,7 @@ const tabs = [
 
 const updateNotebook = (newBook) => {
   lastNotebook.value = newBook; 
-  localStorage.setItem('lastNotebook', newBook);
+  localStorage.setItem('lastCalcNotebook', newBook);
 }
 
 
@@ -41,7 +41,7 @@ onMounted(() => {
     tab.value = lastTab;
   }
 
-  const lastNb = localStorage.getItem('lastNotebook');
+  const lastNb = localStorage.getItem('lastCalcNotebook');
   if (lastNb) {
     lastNotebook.value = lastNb;
   }
@@ -68,7 +68,6 @@ onMounted(() => {
         v-if="item.id === 'notes' && ready"
         :is="item.comp" 
         :lastNotebook="lastNotebook" 
-        :lastNoteSection="lastNoteSection"
         @update:book="updateNotebook($event)"
       />
       <component

@@ -77,9 +77,29 @@ const noteSections = {
     } 
   }
 };
+
+
+const props = defineProps({
+  lastNotebook: {
+    type: String,
+    default: ""
+  }
+});
+
+
+const emit = defineEmits([ 'update:book' ]);
+
+
+const updateNotebook = (newBook) => {
+  emit('update:book', newBook); 
+}
 </script>
 
 <template>
-  <NoteBook :notes="noteSections" />
+  <NoteBook 
+    :notes="noteSections" 
+    :lastNotebook="props.lastNotebook"
+    @update:book="updateNotebook($event)"
+  />
 </template>
 

@@ -63,11 +63,8 @@ watch(selectedNotebook, (val) => {
 });
 
 
-watch(selectedSection, (val) => {
-  if (val) {
-    emit('update:section', val);
-  } 
-  loadContent()
+watch(selectedNotebook, () => {
+  loadContent();
 });
 
 
