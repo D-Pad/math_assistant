@@ -63,7 +63,7 @@ watch(selectedNotebook, (val) => {
 });
 
 
-watch(selectedNotebook, () => {
+watch(selectedSection, () => {
   loadContent();
 });
 

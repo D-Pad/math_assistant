@@ -212,9 +212,36 @@ export const buildPath = (pts, xMin, xMax, yMin, yMax) => {
 };
 
 
-export const round = (n) => {
+export const numDecimalsFromDecimalValue = (val) => {
+  
+  let copyVal = val;
+  let numDecimals = 1; 
+  while (copyVal < 1) {
+    copyVal = copyVal * 10;
+    numDecimals++;
+  }
+
+  return numDecimals;
+
+}
+
+
+export const round = (n, decimals=null) => {
+
   if (Math.abs(n) < 0.0000001) return 0; 
-  return Math.round(n * 100) / 100;
+ 
+  let retVal = null;
+  if (decimals) {
+    const multiplier = Math.pow(10, decimals);
+    retVal = Math.round(n * multiplier) / multiplier;
+  }
+  else { 
+    retVal = Math.round(n * 100) / 100;
+  }
+
+  console.log("RET", retVal, decimals);
+  return retVal
+
 };
 
 

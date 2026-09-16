@@ -1,5 +1,10 @@
 <script setup>
+import { round, numDecimalsFromDecimalValue } from '@scripts/calculusMath.js';
+import { onBeforeMount } from 'vue';
+
+
 const numElement = defineModel();
+let numDecimals = null;
 
 
 const props = defineProps({
@@ -33,7 +38,7 @@ const decrement = () => {
     next = props.min;
   }
 
-  numElement.value = next;
+  numElement.value = round(next, numDecimals);
 
 }
 
@@ -49,9 +54,16 @@ const increment = () => {
     next = props.max;
   }
 
-  numElement.value = next;
+  numElement.value = round(next, numDecimals);
 
 }
+
+
+onBeforeMount(() => {
+  if (props.step != 1) {
+    numDecimals = numDecimalsFromDecimalValue(props.step); 
+  }
+});
 </script>
 
 <template>

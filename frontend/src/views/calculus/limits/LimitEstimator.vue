@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import NumInput from '@/components/CustomNumInput.vue';
+import { round, numDecimalsFromDecimalValue } from '@scripts/calculusMath.js';
 
 
 const props = defineProps({
@@ -35,8 +36,10 @@ const rows = computed(() => {
   
   for (let i = 0; i < numRows.value; i++) {
 
-    const lowBase = limitValue.value - mutator;
-    const highBase = limitValue.value + mutator;
+    const numDecimals = numDecimalsFromDecimalValue(mutator);
+
+    const lowBase = round(limitValue.value - mutator, numDecimals);
+    const highBase = round(limitValue.value + mutator, numDecimals);
 
     lowRows.push(lowBase); 
     highRows.unshift(highBase);
@@ -84,6 +87,49 @@ watch(rows, () => {
 // Keep the expression updated across components
 watch(() => props.limExpr, (v) => { localExpr.value = v });
 watch(localExpr, (v) => { emit('update:limExpr', v); });
+
+
+// Update 'last' values 
+watch(limitValue, (newVal) => { 
+  localStorage.setItem('lastLimEstValue', newVal); 
+});
+
+watch(limitTolerance, (newVal) => {
+  localStorage.setItem('lastLimEstTolerance', newVal); 
+});
+
+watch(numRows, (newVal) => {
+  localStorage.setItem('lastLimEstNumRows', newVal); 
+});
+
+watch(mutationFactor, (newVal) => {
+  localStorage.setItem('lastLimEstMutation', newVal); 
+});
+
+
+onMounted(() => {
+
+  const lastLimVal = localStorage.getItem('lastLimEstValue');
+  if (lastLimVal) {
+    limitValue.value = lastLimVal;
+  }
+
+  const lastLimTolerance = localStorage.getItem('lastLimEstTolerance');
+  if (lastLimTolerance) {
+    limitTolerance.value = lastLimTolerance;
+  }
+
+  const lastLimNumRows = localStorage.getItem('lastLimEstNumRows');
+  if (lastLimNumRows) {
+    numRows.value = lastLimNumRows;
+  }
+
+  const lastLimMutation = localStorage.getItem('lastLimEstMutation');
+  if (lastLimMutation) {
+    mutationFactor.value = lastLimMutation;
+  }
+
+});
 </script>
 
 <template>

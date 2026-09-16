@@ -5,6 +5,7 @@ import LimitGraph from './LimitGrapher.vue';
 import NavRow from '@/components/NavRow.vue';
 
 
+const ready = ref(false);
 const expr = ref('x^2');
 const tab = ref('graphing');
 const tabs = [
@@ -12,16 +13,26 @@ const tabs = [
   { id: 'estimate', title: 'Estimation', comp: LimitEstimator }
 ];
 
+
 const updateExpr = (newExpr) => {
+ 
+  if (!ready.value) return;
+
   expr.value = newExpr;
   localStorage.setItem('limExpr', newExpr);
+
 }
 
 onMounted(() => {
+  
   const lastExpr = localStorage.getItem('limExpr');
-  if (lastExpr !== null || lastExpr !== undefined) {
+  
+  if (lastExpr) {
     expr.value = lastExpr;
   }
+
+  ready.value = true;
+
 });
 </script>
 
