@@ -74,30 +74,84 @@ export const niceStep = (range) => {
 };
 
 
-export const sampleFn = (fn, xMin, xMax, steps = 500) => {
-  
-  const pts = [];
-  
-  for (let i = 0; i <= steps; i++) {
-    const x = xMin + (xMax - xMin) * i / steps;
-    pts.push([x, safe(fn, x)]);
-  }
-  
-  return pts;
-
-};
-
-
 const percentile = (sorted, p) => {
   
-  const idx = (sorted.length - 1) * p;
-  const lo = Math.floor(idx), hi = Math.ceil(idx);
+  const idx = (sorted.length - 1) * p, 
+    lo = Math.floor(idx), 
+    hi = Math.ceil(idx);
   
   if (lo === hi) return sorted[lo];
   
   const frac = idx - lo;
-  
   return sorted[lo] * (1 - frac) + sorted[hi] * frac;
+
+}
+
+
+export function sampleFn(fn, xMin, xMax, opts = {}) {
+  
+  const {
+    baseSegments = 60,   
+    maxDepth = 16,       
+    maxPoints = 40000,   
+    relTol = 0.004,      
+  } = opts;
+
+  const safe = (x) => {
+    try { 
+      const y = fn(x); 
+      return (typeof y === 'number' && isFinite(y)) ? y : NaN; 
+    }
+    catch (e) { return NaN; }
+  };
+
+  const coarseYs = [];
+  for (let i = 0; i <= baseSegments; i++) {
+    const y = safe(xMin + (xMax - xMin) * i / baseSegments);
+    if (isFinite(y)) coarseYs.push(y);
+  }
+  
+  let flatTol = 0.01;
+  if (coarseYs.length) {
+    const sorted = coarseYs.slice().sort((a, b) => a - b);
+    const range = percentile(sorted, 0.98) - percentile(sorted, 0.02);
+    flatTol = Math.max(1e-6, (range * relTol) || 0.01);
+  }
+
+  const pts = [];
+  let count = 0;
+  const pushPoint = (x, y) => { 
+    pts.push([x, y]); 
+    count++; 
+  };
+
+  const recurse = (x0, y0, x1, y1, depth) => {
+   
+    if (count >= maxPoints || depth >= maxDepth || x1 - x0 < 1e-12) {
+      pushPoint(x0, y0);
+      return;
+    }
+    
+    const xm = (x0 + x1) / 2;
+    const ym = safe(xm);
+    if (isFinite(y0) && isFinite(y1) && isFinite(ym)) {
+      const yLinear = (y0 + y1) / 2;
+      if (Math.abs(ym - yLinear) < flatTol) { pushPoint(x0, y0); return; }
+    }
+    
+    recurse(x0, y0, xm, ym, depth + 1);
+    recurse(xm, ym, x1, y1, depth + 1);
+  
+  }
+
+  for (let i = 0; i < baseSegments; i++) {
+    const x0 = xMin + (xMax - xMin) * i / baseSegments;
+    const x1 = xMin + (xMax - xMin) * (i + 1) / baseSegments;
+    recurse(x0, safe(x0), x1, safe(x1), 0);
+  }
+  
+  pushPoint(xMax, safe(xMax));
+  return pts;
 
 }
 

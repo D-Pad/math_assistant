@@ -27,7 +27,7 @@ ALLOWED_NAMES = {
 }
 
 
-def parse_expr(expr):
+def parse_expr(expr: str):
     
     expr = expr.replace("^", "**")
 
@@ -188,7 +188,6 @@ def calculate_limit():
         "limitCalc": limit_result,
         "status": status,
         "estimate": estimate,
-        "tolerance": tolerance, 
         "leftEstimate": left_estimate,
         "rightEstimate": right_estimate,
         "difference": round(difference, ROUNDED_TO),
