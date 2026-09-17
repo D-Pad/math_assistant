@@ -213,34 +213,24 @@ export const buildPath = (pts, xMin, xMax, yMin, yMax) => {
 
 
 export const numDecimalsFromDecimalValue = (val) => {
-  
   if (val === 0) return 0;
 
   const str = Number(val).toString();
   if (str.includes('e-')) {
     return parseInt(str.split('e-')[1], 10);
   }
-
   const parts = str.split('.');
   return parts[1] ? parts[1].length : 0;
 };
 
 
-export const round = (n, decimals=null) => {
+export const round = (n, decimals = 2) => {
+  if (Math.abs(n) < 1e-12) return 0;          // slightly tighter epsilon
 
-  if (Math.abs(n) < 0.0000001) return 0; 
- 
-  let retVal = null;
-  if (decimals) {
-    const multiplier = Math.pow(10, decimals);
-    retVal = Math.round(n * multiplier) / multiplier;
-  }
-  else { 
-    retVal = Math.round(n * 100) / 100;
-  }
-
-  return retVal
-
+  // Clamp to a safe maximum so we never exceed float64 precision
+  const places = Math.min(decimals == null ? 2 : decimals, 12);
+  const multiplier = 10 ** places;
+  return Math.round(n * multiplier) / multiplier;
 };
 
 

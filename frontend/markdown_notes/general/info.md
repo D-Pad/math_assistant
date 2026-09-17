@@ -26,6 +26,7 @@ $$
 | `y_2`                                     | $y_2$                           |
 | `\frac{x}{y}`                             | $\frac{x}{y}$                   |
 | `a \cdot b`                               | $a \cdot b$                     |
+| `a \neq b`                                | $a \neq b$                      |
 
 Some Greek symbols and relational symbols can be found 
 [here](https://gist.github.com/LKS90/252ac41bd4a173be35b0)

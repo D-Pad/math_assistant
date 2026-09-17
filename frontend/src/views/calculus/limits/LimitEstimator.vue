@@ -80,6 +80,26 @@ const hasData = () => {
 }
 
 
+const limitExists = (direction) => {
+  
+  if (direction == null || direction == 'both') {
+    if (calculationOutput.value.estimate != 'No limit') return true;
+    else return false;
+  }
+
+  else if (direction == 'left') {
+    if (calculationOutput.value.leftEstimate != 'No limit') return true;
+    else return false;
+  }
+
+  else if (direction == 'right') {
+    if (calculationOutput.value.rightEstimate != 'No limit') return true;
+    else return false;
+  }
+
+}
+
+
 watch(rows, () => {
   calculationOutput.value = null; 
 });
@@ -111,22 +131,22 @@ onMounted(() => {
 
   const lastLimVal = localStorage.getItem('lastLimEstValue');
   if (lastLimVal) {
-    limitValue.value = lastLimVal;
+    limitValue.value = Number(lastLimVal);
   }
 
   const lastLimTolerance = localStorage.getItem('lastLimEstTolerance');
   if (lastLimTolerance) {
-    limitTolerance.value = lastLimTolerance;
+    limitTolerance.value = Number(lastLimTolerance);
   }
 
   const lastLimNumRows = localStorage.getItem('lastLimEstNumRows');
   if (lastLimNumRows) {
-    numRows.value = lastLimNumRows;
+    numRows.value = Number(lastLimNumRows);
   }
 
   const lastLimMutation = localStorage.getItem('lastLimEstMutation');
   if (lastLimMutation) {
-    mutationFactor.value = lastLimMutation;
+    mutationFactor.value = Number(lastLimMutation);
   }
 
 });
@@ -186,7 +206,7 @@ onMounted(() => {
         
         <tr v-for="n in Object.keys(rows.lows)">
           <td class="input-row" >
-            <input type="number" class="table-input" :value="rows.lows[n]">
+            <input type="number" class="table-input" :value="rows.lows[n]">  
           </td>
           <td v-if="hasData()">
             {{ calculationOutput.leftResults[n][1] }} 
@@ -225,28 +245,28 @@ onMounted(() => {
         </tr>
 
         <tr>
-          <td>Difference</td>
-          <td>{{ calculationOutput.difference }}</td>
-        </tr>
-
-        <tr>
-          <td>Left Estimate</td>
+          <td>Left Limit</td>
           <td>{{ calculationOutput.leftEstimate }}</td>
         </tr>
         
         <tr>
-          <td>Right Estimate</td>
+          <td>Right Limit</td>
           <td>{{ calculationOutput.rightEstimate }}</td>
         </tr>
 
         <tr>
-          <td>Limit Estimate</td>
+          <td>Two-Sided Limit</td>
           <td v-if="calculationOutput.estimate !== null">
             {{ calculationOutput.estimate }}
           </td>
           <td v-else>
             No limit 
           </td>
+        </tr>
+
+        <tr>
+          <td>Difference</td>
+          <td>{{ calculationOutput.difference }}</td>
         </tr>
 
         <tr>
@@ -261,12 +281,26 @@ onMounted(() => {
   </div>
 
   <template v-if="calculationOutput !== null">
-    <div class="conclusion" v-if="calculationOutput.estimate !== null">
-      A limit exists at {{ calculationOutput.estimate }}
-    </div>
+    
+    <div class="conclusion">
+      <span v-if="limitExists()"> 
+        A limit exists at {{ calculationOutput.estimate }} as 
+        x→{{ limitValue }}.
+      </span>
 
-    <div class="conclusion" v-else>
-      No limit exists 
+      <span v-if="limitExists('left')"> 
+        A left limit exists at {{ calculationOutput.leftEstimate }}
+      </span>
+     
+      <span v-if="limitExists('left') && limitExists('right')">
+        and a
+      </span>
+
+      <span v-else>. A</span>
+
+      <span v-if="limitExists('right')"> 
+        right limit exists at {{ calculationOutput.rightEstimate }}.
+      </span>
     </div>
   </template>
   

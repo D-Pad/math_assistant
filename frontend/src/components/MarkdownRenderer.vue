@@ -80,26 +80,35 @@ const html = computed(() => md.render(props.content || ''))
 .markdown-body h1,
 .markdown-body h2,
 .markdown-body h3,
-.markdown-body h4 {
+.markdown-body h4,
+.markdown-body h5 {
   margin-top: 1.0em;
   margin-bottom: 0.6em;
-  font-size: 1.5em;
 }
 
 .markdown-body h1 {
   color: var(--coral);
+  font-size: 1.5em;
 }
 
 .markdown-body h2 {
   color: var(--amber);
+  font-size: 1.3em;
 }
 
 .markdown-body h3 {
   color: var(--teal);
+  font-size: 1.1em;
 }
 
 .markdown-body h4 {
   color: var(--cyan);
+  font-size: 0.9em;
+}
+
+.markdown-body h5 {
+  color: var(--purple);
+  font-size: 0.7em;
 }
 
 .markdown-body em {
@@ -112,7 +121,7 @@ const html = computed(() => md.render(props.content || ''))
 }
 
 .markdown-body ul {
-  color: var(--teal);
+  color: var(--purple);
 }
 
 /* ========== Tables ========== */

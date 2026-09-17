@@ -8,6 +8,10 @@ let numDecimals = null;
 
 
 const props = defineProps({
+  value: {
+    type: Number,
+    default: 1
+  }, 
   min: {
     type: Number,
     default: null

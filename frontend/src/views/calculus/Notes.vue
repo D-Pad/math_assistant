@@ -10,6 +10,7 @@ import CMEtwo from "@notes/calculus/calc_made_easy/ch2.md?raw";
 // Mobius reading material
 import MobModOne_Two_One from "@notes/calculus/mobius/mod_1_2-1.md?raw";
 import MobModOne_Two_Two from "@notes/calculus/mobius/mod_1_2-2.md?raw";
+import MobModOne_Two_Three from "@notes/calculus/mobius/mod_1_2-3.md?raw";
 
 // ------------------ Markdown rendering helpers ------------------- //
 const noteSections = {
@@ -30,14 +31,18 @@ const noteSections = {
   mobius: {
     title: "Mobius",
     sections: {
-      mod1: {
+      mod10: {
         title: "Module 1: 2.1",
         comp: MobModOne_Two_One
       },
-      mod2: {
+      mod11: {
         title: "Module 1: 2.2",
         comp: MobModOne_Two_Two
-      }
+      },
+      mod12: {
+        title: "Module 1: 2.3",
+        comp: MobModOne_Two_Three
+      },
     }
   }
 };
