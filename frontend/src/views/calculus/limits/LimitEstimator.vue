@@ -81,19 +81,27 @@ const hasData = () => {
 
 
 const limitExists = (direction) => {
+ 
+  const output = calculationOutput.value; 
   
   if (direction == null || direction == 'both') {
-    if (calculationOutput.value.estimate != 'No limit') return true;
+    if (output.estimate != 'No limit' && 
+      output.estimate != null &&
+      output.estimate != undefined) return true;
     else return false;
   }
 
   else if (direction == 'left') {
-    if (calculationOutput.value.leftEstimate != 'No limit') return true;
+    if (output.leftEstimate != 'No limit' &&
+      output.leftEstimate != null &&
+      output.leftEstimate != undefined) return true;
     else return false;
   }
 
   else if (direction == 'right') {
-    if (calculationOutput.value.rightEstimate != 'No limit') return true;
+    if (output.rightEstimate != 'No limit' &&
+      output.rightEstimate != null &&
+      output.rightEstimage != undefined) return true;
     else return false;
   }
 
