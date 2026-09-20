@@ -5,7 +5,12 @@
  - 4.6.3 Estimate the end behavior of a function as  x increases or decreases 
  without bound.
  - 4.6.4 Recognize an oblique asymptote on the graph of a function.
+---
+*Important Notes*
+ - The output of a function cannot cross a **vertical asymptote**, but can 
+ cross a **horizontal asymptote** an infinite number of times.
 
+---
 To graph a function $f$ defined on an unbounded domain, we also need to know 
 the behavior of $f$ as $x \to \pm \infty$
 
@@ -144,4 +149,91 @@ $$
 \lim_{x \to a} f(x) = +\infty \text{or} -\infty
 $$
 
+#### Participation Activity #3
+Evaluate $\lim_{x \to 2}f(x)$ for $f(x)$ shown here:
+![Figure 8](../markdown_notes/calculus/mobius/images/fig_8.png)
+
+
+## Limits at Infinity and Horizontal Asymptotes
+Recall that $\lim_{x \to a}f(x) = L$ means $f(x)$ becomes arbitrarily close 
+to $L$ as long as $x$ is sufficiently close to $a$. We can extend this idea 
+to limits at infinity. For example, consider the function 
+$f(x) = 2 + \frac{1}{x}$. As the values of this function get larger, the values
+of $f(x)$ approach $2$. We say that the limit as $x$ approaches $\infty$ of 
+$f(x)$ is $2$ and write $\lim_{x \to \infty}f(x) = 2$. Similarly, for $x < 0$,
+as the values $\lvert x \rvert$ get larger, the values of $f(x)$ approaches 
+$2$. We say the limit as $x$ approaches $-\infty$ of $f(x)$ is $2$ and write 
+$lim_{x \to -\infty} = 2$. 
+![Figure 9](../markdown_notes/calculus/mobius/images/fig_9.png)
+The function approaches the asymptote $y = 2$ as $x$ approaches $\pm\infty$.
+More generally, for any function $f$, we say the limit as $x \to \infty$ of 
+$f(x)$ is $L$ if $f(x)$ becomes arbitrarily close to $L$ as long as $x$ is 
+sufficiently large. In that case, we write $\lim_{x \to \infty} $f(x) = L$. 
+Similarly, we say the limit as $x \to −\infty$ of $f(x)$ is $L$ if $f(x)$ 
+becomes arbitrarily close to $L$ as long as $x < 0$ and $\lvert x \rvert$ is 
+sufficiently large. In that case, we write $\lim_{x \to -\infty}f(x) = L$. We 
+now look at the definition for a function having a limit at infinity. 
+
+**Definition**
+(Informal) If the values of $f(x)$ become arbitrarily close to $L$ as $x$
+becomes sufficiently large, we say the function $f$ has a limit at $\infty$ 
+and write:
+$$
+\lim_{x \to \infty}f(x) = L
+$$
+
+If the values of $f(x)$ becomes arbitrarily close to $L$ for $x < 0$ as
+$\lvert x \rvert$ becomes sufficiently large, we say that the function $f$ has 
+a limit at negative infinity and write.
+$$
+\lim_{x \to -\infty}f(x) = L
+$$
+
+If the values $f(x)$ are getting arbitrarily close to some finite value $L$ as 
+$x \to \infty$ or $x \to −\infty$, the graph of $f$ approaches the line 
+$y = L$. In that case, the line $y = L$ is a horizontal asymptote of 
+$f(x) = \frac{1}{x}$.
+
+**Definition**
+If $\lim_{x \to \infty}f(x) = L$ or $\lim_{x \to -\infty} f(x) = L$, we say 
+the line $y = L$ is a *horizontal asymptote* of $f$.
+
+A function cannot cross a vertical asymptote because the graph must approach 
+$\infty$ (or $−\infty$) from at least one direction as $x$ approaches the 
+vertical asymptote. However, a function may cross a horizontal asymptote. In 
+fact, a function may cross a horizontal asymptote an unlimited number of times.
+For example, the function $f(x) = \frac{(cosx)}{x} + 1$ intersects the 
+horizontal asymptote $y = 1$ an infinite number of times as it oscillates 
+around the asymptote with ever-decreasing amplitude.
+
+#### Participation Activity #4
+Evaluate $\lim_{x \to −\infty}(4 + \frac{4}{x}) and 
+$\lim_{x \to \infty}(4 + \frac{4}{x}$). Determine the horizontal asymptotes of
+$f(x) = (4 + \frac{4}{x}), if any.
+
+$\lim_{x \to \infty}(4 + \frac{4}{x}$ = 4 
+$\lim_{x \to \infty}(4 + \frac{4}{x}$ = 4 
+Horizontal Asymptote: y = 4
+
+## End Behavior
+The behavior of a function as $x \to \pm\infty$ is called the function’s end 
+behavior. At each of the function’s ends, the function could exhibit one of 
+the following types of behavior: 
+
+ - The function $f(x)$ approaches a horizontal asymptote $y = L$.
+ - The function $f(x) \to \infty$ or $f(x) \to −\infty$.
+ - The function does not approach a finite limit, nor does it approach 
+ $\infty$ or $−\infty$. In this case, the function may have some oscillatory 
+ behavior. Let’s consider several classes of functions here and look at the 
+ different types of end behaviors for these functions.
+
+## End Behavior for Polynomial Functions
+Consider the power function $f(x) = x^n$ where $n$ is a positive integer.
+$$
+\lim_{x \to \infty}x^n = \infty;n = 1,2,3,...
+$$
+and 
+$$
+\lim_{x \to -\infty} x^n = \begin{cases} \infty & ; \; n = 2, 4, 6, \ldots \\ -\infty & ; \; n = 1, 3, 5, \ldots \end{cases} 
+$$
 
