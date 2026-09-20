@@ -109,6 +109,39 @@ Begin by constructing a table of functional values
 | -0.01                                | -0.01                                |
 | -0.1                                 | -0.1                                 |
 
+### Infinite Limits from Positive Integers
+If $n$ is a positive even integer, then 
+$$
+\lim_{x \to a}\frac{1}{(x − a)^n} = +\infty
+$$
 
+If $n$ is a positive odd integer, then
+$$
+\lim_{x \to a}^+ \frac{1}{(x−a)^n} = +\infty
+$$
+and
+$$
+\lim_{x \to a}^- \frac{1}{(x−a)^n} = +\infty
+$$
+
+We should also point out that in the graphs of $f(x) = \frac{1}{(x−a)}^n$, 
+points on the graph having $x$-coordinates very near to $a$ are very close to 
+the vertical line $x = a$. That is, as $x$ approaches $a$, the points on the 
+graph of $f(x)$ are closer to the line $x = a$. The line $x = a$ is called a 
+vertical asymptote of the graph. We formally define a vertical asymptote as 
+follows:
+
+**Definition**
+Let $f(x)$ be a function. If any of the following conditions hold, then the 
+line $x = a$ is a vertical asymptote of $f(x)$.
+$$
+\lim_{x \to a}^− f(x) = +\infty \text{or} -\infty
+$$
+$$
+\lim_{x \to a}^+ f(x) = +\infty \text{or} -\infty
+$$
+$$
+\lim_{x \to a} f(x) = +\infty \text{or} -\infty
+$$
 
 

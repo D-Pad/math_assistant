@@ -93,7 +93,7 @@ export function sampleFn(fn, xMin, xMax, opts = {}) {
   const {
     baseSegments = 60,   
     maxDepth = 16,       
-    maxPoints = 40000,   
+    maxPoints = 60000,   
     relTol = 0.004,      
   } = opts;
 
